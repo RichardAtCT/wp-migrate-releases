@@ -49,20 +49,10 @@ detect_platform() {
             ;;
     esac
 
-    # Note: Currently only x86_64 binaries are provided
-    # Add ARM detection here when ARM builds are available
     case "$arch" in
-        x86_64|amd64)
-            ARCH="x86_64"
-            ;;
-        arm64|aarch64)
-            if [ "$PLATFORM" = "macos" ]; then
-                # macOS ARM can run x86_64 via Rosetta
-                ARCH="x86_64"
-                warn "Running x86_64 binary via Rosetta 2 on Apple Silicon"
-            else
-                error "ARM64 Linux binaries not yet available. Please check back later."
-            fi
+        x86_64|amd64|arm64|aarch64)
+            # All supported architectures
+            # macOS ARM64 binary works on Intel via Rosetta 2
             ;;
         *)
             error "Unsupported architecture: $arch"
@@ -138,7 +128,7 @@ main() {
     echo ""
 
     detect_platform
-    info "Detected platform: $PLATFORM ($ARCH)"
+    info "Detected platform: $PLATFORM"
 
     local version
     version=$(get_latest_version)
