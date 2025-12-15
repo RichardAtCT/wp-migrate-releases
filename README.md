@@ -46,8 +46,8 @@ wp-migrate
 # Check license/trial status
 wp-migrate status
 
-# Activate license
-wp-migrate activate WPMIG-XXXX-XXXX-XXXX-XXXX
+# Activate license (use key from purchase email)
+wp-migrate activate xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
 
 ## Trial
