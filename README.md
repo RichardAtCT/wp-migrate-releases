@@ -9,6 +9,8 @@ A CLI tool for migrating WordPress sites between servers using only FTP/SFTP acc
 curl -fsSL https://raw.githubusercontent.com/RichardAtCT/wp-migrate-releases/main/install.sh | bash
 ```
 
+*macOS: Native ARM64 binary for Apple Silicon. Intel Macs run via Rosetta 2.*
+
 ### Windows
 Download `wp-migrate-windows.exe` from the [latest release](https://github.com/RichardAtCT/wp-migrate-releases/releases/latest) and add to your PATH.
 
