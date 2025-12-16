@@ -1230,7 +1230,7 @@
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-primary" onclick="copyInstall()">Try 3 Free</button>
+                    <button class="btn btn-primary btn-copy-trigger" onclick="copyInstall()">Try 3 Free</button>
                     <a href="#pricing" class="btn btn-secondary">Buy License</a>
                 </div>
 
@@ -1718,7 +1718,7 @@
             </div>
 
             <div class="btn-group fade-in">
-                <button class="btn btn-primary" onclick="copyInstall()">Try 3 Free</button>
+                <button class="btn btn-primary btn-copy-trigger" onclick="copyInstall()">Try 3 Free</button>
                 <a href="#pricing" class="btn btn-secondary">Buy License</a>
             </div>
 
@@ -1770,18 +1770,32 @@
 
     <script>
         // Copy install command
-        function copyInstall() {
+        function copyInstall(event) {
             const command = 'curl -fsSL https://wp-migrate.dev/install.sh | bash';
             navigator.clipboard.writeText(command).then(() => {
-                const btns = document.querySelectorAll('.copy-btn');
-                btns.forEach(btn => {
+                // Update small copy buttons in install boxes
+                const copyBtns = document.querySelectorAll('.copy-btn');
+                copyBtns.forEach(btn => {
                     btn.classList.add('copied');
                     btn.innerHTML = '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>';
                 });
+
+                // Update "Try 3 Free" buttons
+                const tryBtns = document.querySelectorAll('.btn-copy-trigger');
+                tryBtns.forEach(btn => {
+                    btn.dataset.originalText = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    btn.classList.add('copied');
+                });
+
                 setTimeout(() => {
-                    btns.forEach(btn => {
+                    copyBtns.forEach(btn => {
                         btn.classList.remove('copied');
                         btn.innerHTML = '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+                    });
+                    tryBtns.forEach(btn => {
+                        btn.textContent = btn.dataset.originalText;
+                        btn.classList.remove('copied');
                     });
                 }, 2000);
             });
