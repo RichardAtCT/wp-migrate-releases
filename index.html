@@ -4,19 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WP-Migrate - WordPress Migration CLI Tool | No SSH Required</title>
-    <meta name="description" content="Migrate WordPress sites between shared hosting servers using FTP/SFTP. No SSH required. Works with any hosting provider.">
+    <meta name="description" content="CLI tool for migrating WordPress sites between shared hosting servers. No SSH required. Works via FTP/SFTP. Handles serialized data correctly. 3 free migrations to try.">
     <meta name="keywords" content="wordpress migration, wordpress cli, ftp migration, sftp migration, shared hosting migration, wordpress transfer">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="WP-Migrate - WordPress Migration Made Simple">
-    <meta property="og:description" content="CLI tool for migrating WordPress sites via FTP/SFTP. No SSH required.">
+    <meta property="og:title" content="WP-Migrate — WordPress Migration Made Simple">
+    <meta property="og:description" content="Migrate WordPress sites from your terminal. No SSH required. Works with any shared hosting via FTP/SFTP.">
     <meta property="og:url" content="https://wp-migrate.dev">
     <meta property="og:type" content="website">
+    <meta property="og:image" content="https://wp-migrate.dev/og-image.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="WP-Migrate - WordPress Migration CLI Tool">
-    <meta name="twitter:description" content="Migrate WordPress sites via FTP/SFTP. No SSH required.">
+    <meta name="twitter:title" content="WP-Migrate — WordPress Migration Made Simple">
+    <meta name="twitter:description" content="Migrate WordPress sites from your terminal. No SSH required.">
+    <meta name="twitter:image" content="https://wp-migrate.dev/og-image.png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -596,6 +598,180 @@
             letter-spacing: 0.2em;
         }
 
+        /* Config Code Block */
+        .config-section {
+            background: var(--bg-elevated);
+        }
+
+        .config-block {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            max-width: 700px;
+            margin: 2rem auto 0;
+            overflow: hidden;
+        }
+
+        .config-header {
+            background: var(--bg-card);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .config-filename {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .config-body {
+            padding: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            line-height: 1.7;
+            overflow-x: auto;
+        }
+
+        .config-body pre {
+            margin: 0;
+            white-space: pre;
+        }
+
+        .yaml-comment {
+            color: var(--text-dim);
+        }
+
+        .yaml-key {
+            color: var(--cyan);
+        }
+
+        .yaml-value {
+            color: var(--text);
+        }
+
+        .yaml-var {
+            color: var(--yellow);
+        }
+
+        .config-caption {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Comparison Table */
+        .comparison-section {
+            background: var(--bg-elevated);
+        }
+
+        .comparison-intro {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .comparison-wrapper {
+            overflow-x: auto;
+            margin-top: 2rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        .comparison-table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem 1.25rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-table th {
+            background: var(--bg-card);
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .comparison-table th:first-child,
+        .comparison-table td:first-child {
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tbody tr {
+            background: var(--bg);
+            transition: background 0.2s;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: var(--bg-elevated);
+        }
+
+        .comparison-table .highlight {
+            background: rgba(0, 217, 255, 0.05);
+        }
+
+        .comparison-table .highlight th {
+            color: var(--cyan);
+            position: relative;
+        }
+
+        .comparison-table .check {
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .comparison-table .cross {
+            color: var(--text-dim);
+        }
+
+        .comparison-table .price-cell {
+            font-size: 0.85rem;
+        }
+
+        .comparison-table .price-cell .our-price {
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .comparison-table .price-cell .recurring {
+            color: var(--text-dim);
+        }
+
+        .comparison-table .price-cell .free-tag {
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-wrapper {
+                margin-left: -1.5rem;
+                margin-right: -1.5rem;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.8rem;
+            }
+        }
+
         /* Features Grid */
         .features-grid {
             display: grid;
@@ -1054,7 +1230,7 @@
                 </div>
 
                 <div class="btn-group">
-                    <a href="#pricing" class="btn btn-primary">Get Started Free</a>
+                    <a href="#pricing" class="btn btn-primary">Try 3 Free Migrations</a>
                     <a href="https://github.com/RichardAtCT/wp-migrate-releases" class="btn btn-secondary" target="_blank">View on GitHub</a>
                 </div>
 
@@ -1177,6 +1353,38 @@
         </div>
     </section>
 
+    <!-- Config Example -->
+    <section class="config-section">
+        <div class="container">
+            <h2 class="text-center fade-in">Simple Configuration</h2>
+            <div class="config-block fade-in">
+                <div class="config-header">
+                    <span class="config-filename">migration.yaml</span>
+                </div>
+                <div class="config-body">
+<pre><span class="yaml-comment"># migration.yaml</span>
+<span class="yaml-key">source:</span>
+  <span class="yaml-key">ftp_host:</span> <span class="yaml-value">ftp.oldsite.com</span>
+  <span class="yaml-key">ftp_user:</span> <span class="yaml-value">oldsite_user</span>
+  <span class="yaml-key">ftp_pass:</span> <span class="yaml-var">${SOURCE_FTP_PASS}</span>  <span class="yaml-comment"># Use environment variables</span>
+  <span class="yaml-key">wp_path:</span> <span class="yaml-value">/public_html</span>
+
+<span class="yaml-key">destination:</span>
+  <span class="yaml-key">ftp_host:</span> <span class="yaml-value">ftp.newsite.com</span>
+  <span class="yaml-key">ftp_user:</span> <span class="yaml-value">newsite_user</span>
+  <span class="yaml-key">ftp_pass:</span> <span class="yaml-var">${DEST_FTP_PASS}</span>
+  <span class="yaml-key">wp_path:</span> <span class="yaml-value">/public_html</span>
+  <span class="yaml-key">db_host:</span> <span class="yaml-value">localhost</span>
+  <span class="yaml-key">db_name:</span> <span class="yaml-value">newsite_wp</span>
+  <span class="yaml-key">db_user:</span> <span class="yaml-value">newsite_dbuser</span>
+  <span class="yaml-key">db_pass:</span> <span class="yaml-var">${DEST_DB_PASS}</span>
+  <span class="yaml-key">new_url:</span> <span class="yaml-value">https://newsite.com</span></pre>
+                </div>
+            </div>
+            <p class="config-caption fade-in">Simple YAML configuration. Supports environment variables for security.</p>
+        </div>
+    </section>
+
     <!-- Terminal Demo -->
     <section class="terminal-section">
         <div class="container">
@@ -1262,6 +1470,78 @@
         </div>
     </section>
 
+    <!-- Comparison Table -->
+    <section class="comparison-section" id="compare">
+        <div class="container">
+            <h2 class="text-center fade-in">How We Compare</h2>
+            <p class="comparison-intro fade-in">See how wp-migrate stacks up against other WordPress migration tools.</p>
+            <div class="comparison-wrapper fade-in">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th class="highlight">wp-migrate</th>
+                            <th>Duplicator Pro</th>
+                            <th>WP-CLI</th>
+                            <th>All-in-One WP Migration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>No SSH required</td>
+                            <td class="highlight check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="cross">✗</td>
+                            <td class="check">✓</td>
+                        </tr>
+                        <tr>
+                            <td>No WordPress admin needed</td>
+                            <td class="highlight check">✓</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                        </tr>
+                        <tr>
+                            <td>Works on empty destination</td>
+                            <td class="highlight check">✓</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                        </tr>
+                        <tr>
+                            <td>CLI / Terminal based</td>
+                            <td class="highlight check">✓</td>
+                            <td class="cross">✗</td>
+                            <td class="check">✓</td>
+                            <td class="cross">✗</td>
+                        </tr>
+                        <tr>
+                            <td>Handles serialized data</td>
+                            <td class="highlight check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                        </tr>
+                        <tr>
+                            <td>One-time pricing</td>
+                            <td class="highlight price-cell"><span class="our-price">✓ (£39)</span></td>
+                            <td class="price-cell"><span class="recurring">✗ ($99/yr)</span></td>
+                            <td class="price-cell"><span class="free-tag">Free</span></td>
+                            <td class="price-cell"><span class="recurring">✗ ($69/yr)</span></td>
+                        </tr>
+                        <tr>
+                            <td>Pre-DNS testing built-in</td>
+                            <td class="highlight check">✓</td>
+                            <td class="cross">✗</td>
+                            <td class="text-muted">Manual</td>
+                            <td class="cross">✗</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
     <!-- Pricing -->
     <section class="pricing-section" id="pricing">
         <div class="container">
@@ -1334,7 +1614,7 @@
             </div>
             <div class="pricing-footer fade-in">
                 <p class="text-muted">
-                    <a href="#install">Start with 3 free migrations →</a>
+                    <a href="#install">Start Your Free Trial →</a>
                 </p>
             </div>
         </div>
@@ -1437,7 +1717,7 @@
                 </button>
             </div>
 
-            <a href="#pricing" class="btn btn-primary fade-in">Get Started Free</a>
+            <a href="#pricing" class="btn btn-primary fade-in">Start Free — 3 Migrations</a>
 
             <p class="cta-platforms fade-in">Works on macOS · Linux · Windows</p>
         </div>
@@ -1478,8 +1758,8 @@
             <div class="footer-bottom">
                 <div>© 2025 WP-Migrate. All rights reserved.</div>
                 <div class="footer-legal">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
+                    <a href="/privacy.html">Privacy Policy</a>
+                    <a href="/terms.html">Terms of Service</a>
                 </div>
             </div>
         </div>

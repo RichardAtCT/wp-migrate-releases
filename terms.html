@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service | WP-Migrate</title>
+    <meta name="description" content="Terms of Service for WP-Migrate WordPress migration CLI tool.">
+    <meta name="robots" content="noindex">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #0a0e14;
+            --bg-elevated: #0f1419;
+            --bg-card: #151b23;
+            --cyan: #00d9ff;
+            --cyan-dim: #00b8d4;
+            --teal: #14b8a6;
+            --green: #22c55e;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --border: #1e293b;
+            --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --radius: 12px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-display);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        a {
+            color: var(--cyan);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--cyan-dim);
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(10, 14, 20, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .logo span {
+            color: var(--cyan);
+        }
+
+        .back-link {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Content */
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .last-updated {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        ul {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+        }
+
+        strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .highlight-box {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box.green {
+            border-color: rgba(34, 197, 94, 0.3);
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .highlight-box h3 {
+            color: var(--cyan);
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .highlight-box.green h3 {
+            color: var(--green);
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+        }
+
+        code {
+            font-family: var(--font-mono);
+            background: var(--bg-card);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            margin: 0 1rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-inner">
+            <a href="/" class="logo">WP-<span>Migrate</span></a>
+            <a href="/" class="back-link">← Back to Home</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        <h1>Terms of Service</h1>
+        <p class="last-updated">Last updated: December 15, 2025</p>
+
+        <p>These terms are written in plain English. No walls of legal jargon. By using WP-Migrate, you agree to these terms.</p>
+
+        <h2>License</h2>
+        <p>When you purchase WP-Migrate, you receive a perpetual license to use the software:</p>
+        <ul>
+            <li><strong>Single User License (£39)</strong> — Personal use with up to 2 machine activations. You can deactivate and reactivate as needed.</li>
+            <li><strong>Agency License (£149)</strong> — Unlimited machine activations. Suitable for teams and agencies.</li>
+        </ul>
+        <p>Both licenses include unlimited migrations and all current features.</p>
+
+        <div class="highlight-box green">
+            <h3>Free Trial</h3>
+            <p>You get 3 free migrations to try the tool before purchasing. No credit card required. The free tier includes all features — no artificial limitations.</p>
+        </div>
+
+        <h2>Refunds</h2>
+        <p>We offer a <strong>14-day refund policy</strong>, no questions asked. If WP-Migrate doesn't work for your use case, email <a href="mailto:support@wp-migrate.dev">support@wp-migrate.dev</a> and we'll process your refund promptly.</p>
+
+        <h2>Acceptable Use</h2>
+        <p>WP-Migrate is designed for legitimate WordPress migration purposes. You agree not to:</p>
+        <ul>
+            <li>Use the software for any illegal activity</li>
+            <li>Attempt to reverse engineer or redistribute the software</li>
+            <li>Share your license key publicly</li>
+            <li>Use the tool to migrate sites you don't own or have authorization to migrate</li>
+        </ul>
+
+        <h2>Liability & Warranty</h2>
+        <p>The software is provided "as is" without warranty of any kind. We're not liable for any data loss that may occur during migrations.</p>
+
+        <div class="highlight-box">
+            <h3>Always Backup First</h3>
+            <p>We strongly recommend backing up both source and destination sites before running any migration. While WP-Migrate is designed to be safe and reliable, migrations involve moving significant amounts of data and things can go wrong with hosting providers, network connections, or unexpected site configurations.</p>
+        </div>
+
+        <h2>Support</h2>
+        <p>Email support is included with all licenses. Reach us at <a href="mailto:support@wp-migrate.dev">support@wp-migrate.dev</a>. We aim to respond within 48 hours, though we're usually much faster.</p>
+
+        <h2>Updates</h2>
+        <p>Your license includes all future updates to the current major version. We release bug fixes and improvements regularly. Major version upgrades (if any) may require a separate purchase, but we'll always offer existing customers a significant discount.</p>
+
+        <h2>Termination</h2>
+        <p>We reserve the right to revoke licenses that are used for abuse, fraud, or violation of these terms. If we terminate your license, you'll receive a full refund for any unused portion (unless the termination is due to abuse).</p>
+
+        <h2>Changes to Terms</h2>
+        <p>We may update these terms occasionally. Significant changes will be communicated via email to license holders. Continued use of the software after changes constitutes acceptance of the new terms.</p>
+
+        <h2>Contact</h2>
+        <p>Questions about these terms? Email us at <a href="mailto:support@wp-migrate.dev">support@wp-migrate.dev</a>.</p>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <div>© 2025 WP-Migrate. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="/privacy">Privacy Policy</a>
+                <a href="/terms">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
