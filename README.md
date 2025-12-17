@@ -1,6 +1,6 @@
 # WP Migrate
 
-A CLI tool for migrating WordPress sites between servers using only FTP/SFTP access. No SSH required.
+A CLI tool for migrating WordPress sites between any servers. Works with SSH, SFTP, FTPS, or FTP — automatically uses the fastest method available.
 
 ## Quick Install
 
@@ -32,8 +32,10 @@ sudo mv wp-migrate /usr/local/bin/
 
 ## Features
 
-- Works with shared hosting (no SSH needed)
-- FTP, FTPS, and SFTP support  
+- Works with any hosting (shared, VPS, dedicated)
+- Auto-detects SSH/WP-CLI for fastest transfers
+- Falls back to FTP/SFTP when SSH unavailable
+- rsync for 4-10x faster file transfers (with SSH)
 - Database export/import with URL replacement
 - Handles WordPress serialized data correctly
 - Interactive wizard or config file mode
