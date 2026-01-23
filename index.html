@@ -26,7 +26,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <style>
-        /* CSS Variables */
+        /* CSS Variables - Clean Theme (default) */
         :root {
             --bg: #0a0e14;
             --bg-elevated: #0f1419;
@@ -47,6 +47,33 @@
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
             --radius: 12px;
             --radius-sm: 8px;
+            --scanline-opacity: 0;
+            --glow-intensity: 0;
+            --crt-curve: 0px;
+        }
+
+        /* CLI Theme Variables */
+        [data-theme="cli"] {
+            --bg: #0d0d0d;
+            --bg-elevated: #111111;
+            --bg-card: #0a0a0a;
+            --bg-code: #080808;
+            --cyan: #00ff9f;
+            --cyan-dim: #00cc7f;
+            --teal: #00ff9f;
+            --green: #00ff9f;
+            --yellow: #ffff00;
+            --red: #ff0000;
+            --text: #00ff9f;
+            --text-muted: #00cc7f;
+            --text-dim: #009966;
+            --border: #00ff9f33;
+            --font-display: 'JetBrains Mono', 'Fira Code', monospace;
+            --radius: 0px;
+            --radius-sm: 0px;
+            --scanline-opacity: 0.03;
+            --glow-intensity: 1;
+            --crt-curve: 2px;
         }
 
         /* Reset */
@@ -66,6 +93,102 @@
             color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* CLI Theme - Scanline Effect */
+        [data-theme="cli"] body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 10000;
+            opacity: var(--scanline-opacity);
+        }
+
+        /* CLI Theme - CRT Glow Effect */
+        [data-theme="cli"] body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* CLI Theme - Text Glow */
+        [data-theme="cli"] h1,
+        [data-theme="cli"] h2,
+        [data-theme="cli"] h3,
+        [data-theme="cli"] .logo,
+        [data-theme="cli"] .text-gradient {
+            text-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan), 0 0 30px var(--cyan);
+        }
+
+        [data-theme="cli"] .text-gradient {
+            background: none;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: var(--cyan);
+            background-clip: unset;
+        }
+
+        /* CLI Theme - Blinking Cursor */
+        [data-theme="cli"] .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background: var(--cyan);
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+        }
+
+        .cursor {
+            display: none;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* CLI Theme - Typing Animation */
+        [data-theme="cli"] .typing-text {
+            overflow: hidden;
+            border-right: 3px solid var(--cyan);
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--cyan); }
+        }
+
+        /* CLI Theme - Matrix Rain Background */
+        [data-theme="cli"] .hero::before {
+            background:
+                radial-gradient(ellipse at center top, rgba(0, 255, 159, 0.1) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ctext x='10' y='20' fill='%23003311' font-family='monospace' font-size='10'%3E01%3C/text%3E%3Ctext x='50' y='40' fill='%23002211' font-family='monospace' font-size='8'%3E10%3C/text%3E%3Ctext x='30' y='70' fill='%23003311' font-family='monospace' font-size='10'%3E11%3C/text%3E%3Ctext x='70' y='90' fill='%23002211' font-family='monospace' font-size='8'%3E00%3C/text%3E%3C/svg%3E");
+            opacity: 0.5;
         }
 
         a {
@@ -212,6 +335,561 @@
             color: var(--text);
             font-size: 1.5rem;
             cursor: pointer;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--cyan);
+        }
+
+        .theme-toggle-track {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="cli"] .theme-toggle-thumb {
+            left: 22px;
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
+        }
+
+        .theme-label {
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+            min-width: 45px;
+        }
+
+        [data-theme="cli"] .theme-label {
+            color: var(--cyan);
+        }
+
+        /* CLI Theme - Terminal Border on Cards */
+        [data-theme="cli"] .feature-card,
+        [data-theme="cli"] .pricing-card,
+        [data-theme="cli"] .terminal,
+        [data-theme="cli"] .config-block,
+        [data-theme="cli"] .install-box {
+            border: 1px solid var(--cyan);
+            box-shadow: 0 0 10px rgba(0, 255, 159, 0.2), inset 0 0 20px rgba(0, 255, 159, 0.05);
+        }
+
+        [data-theme="cli"] .feature-card:hover,
+        [data-theme="cli"] .pricing-card:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 159, 0.4), inset 0 0 30px rgba(0, 255, 159, 0.1);
+            transform: none;
+        }
+
+        [data-theme="cli"] .btn-primary {
+            background: transparent;
+            border: 2px solid var(--cyan);
+            color: var(--cyan);
+            text-shadow: 0 0 10px var(--cyan);
+        }
+
+        [data-theme="cli"] .btn-primary:hover {
+            background: var(--cyan);
+            color: var(--bg);
+            text-shadow: none;
+            box-shadow: 0 0 30px var(--cyan);
+            transform: none;
+        }
+
+        [data-theme="cli"] .btn-secondary {
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        [data-theme="cli"] .btn-secondary:hover {
+            background: rgba(0, 255, 159, 0.1);
+        }
+
+        /* CLI Theme - Step Numbers */
+        [data-theme="cli"] .step-number {
+            border: 2px solid var(--cyan);
+            background: transparent;
+            color: var(--cyan);
+            font-family: var(--font-mono);
+            text-shadow: 0 0 10px var(--cyan);
+        }
+
+        [data-theme="cli"] .step:hover .step-number {
+            box-shadow: 0 0 30px var(--cyan);
+        }
+
+        /* CLI Theme - Badge */
+        [data-theme="cli"] .badge {
+            background: transparent;
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            text-shadow: 0 0 10px var(--cyan);
+        }
+
+        /* CLI Theme - Feature Icons */
+        [data-theme="cli"] .feature-icon {
+            background: transparent;
+            border: 1px solid var(--cyan);
+            filter: grayscale(1) brightness(2);
+        }
+
+        /* CLI Theme - Problem/Solution Icons */
+        [data-theme="cli"] .ps-icon.problem {
+            background: transparent;
+            border: 1px solid var(--red);
+            color: var(--red);
+            text-shadow: 0 0 5px var(--red);
+        }
+
+        [data-theme="cli"] .ps-icon.solution {
+            background: transparent;
+            border: 1px solid var(--green);
+            color: var(--green);
+            text-shadow: 0 0 5px var(--green);
+        }
+
+        /* CLI Theme - Pricing Badge */
+        [data-theme="cli"] .pricing-badge {
+            background: var(--cyan);
+            color: var(--bg);
+            text-shadow: none;
+        }
+
+        /* CLI Theme - Table */
+        [data-theme="cli"] .comparison-table th,
+        [data-theme="cli"] .comparison-table td {
+            border-color: var(--cyan);
+        }
+
+        [data-theme="cli"] .comparison-table .highlight {
+            background: rgba(0, 255, 159, 0.1);
+        }
+
+        /* CLI Theme - Nav CTA */
+        [data-theme="cli"] .nav-cta {
+            background: transparent !important;
+            border: 1px solid var(--cyan);
+            color: var(--cyan) !important;
+        }
+
+        [data-theme="cli"] .nav-cta:hover {
+            background: var(--cyan) !important;
+            color: var(--bg) !important;
+        }
+
+        /* CLI Theme - Links */
+        [data-theme="cli"] a {
+            text-decoration: none;
+            position: relative;
+        }
+
+        [data-theme="cli"] a:not(.btn):not(.nav-cta):not(.logo)::after {
+            content: '_';
+            animation: blink 1s step-end infinite;
+        }
+
+        /* ASCII Art Container */
+        .ascii-art {
+            display: none;
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            line-height: 1.2;
+            color: var(--cyan);
+            text-align: center;
+            white-space: pre;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px var(--cyan);
+            opacity: 0.8;
+        }
+
+        [data-theme="cli"] .ascii-art {
+            display: block;
+        }
+
+        /* CLI Command Prompt Prefix */
+        .cli-prompt {
+            display: none;
+            color: var(--cyan);
+            font-family: var(--font-mono);
+            margin-right: 0.5rem;
+        }
+
+        [data-theme="cli"] .cli-prompt {
+            display: inline;
+        }
+
+        [data-theme="cli"] h2::before {
+            content: '> ';
+            color: var(--cyan);
+        }
+
+        /* CLI Theme - Footer */
+        [data-theme="cli"] footer {
+            border-top-color: var(--cyan);
+        }
+
+        [data-theme="cli"] .footer-column h4 {
+            color: var(--cyan);
+        }
+
+        [data-theme="cli"] .footer-column h4::before {
+            content: '# ';
+        }
+
+        /* Glitch Animation */
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+                filter: hue-rotate(0deg);
+            }
+            10% {
+                transform: translate(-5px, -3px);
+                filter: hue-rotate(90deg);
+            }
+            20% {
+                transform: translate(5px, 3px);
+                filter: hue-rotate(180deg);
+            }
+            30% {
+                transform: translate(-3px, 2px);
+                filter: hue-rotate(270deg);
+            }
+            40% {
+                transform: translate(3px, -2px);
+                filter: hue-rotate(360deg);
+            }
+            50% {
+                transform: translate(-2px, 1px);
+            }
+            60% {
+                transform: translate(2px, -1px);
+            }
+            70% {
+                transform: translate(-1px, 2px);
+            }
+            80% {
+                transform: translate(1px, -2px);
+            }
+            90% {
+                transform: translate(0);
+            }
+            100% {
+                transform: translate(0);
+                filter: hue-rotate(0deg);
+            }
+        }
+
+        /* CLI Theme - Terminal Window Effect on Sections */
+        [data-theme="cli"] section {
+            position: relative;
+        }
+
+        [data-theme="cli"] section:not(.hero)::before {
+            content: '────────────────────────────────────────────────────────────────────────────────';
+            display: block;
+            color: var(--border);
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        /* CLI Theme - Install Box Enhancement */
+        [data-theme="cli"] .install-box {
+            position: relative;
+            background: var(--bg);
+        }
+
+        [data-theme="cli"] .install-box::before {
+            content: 'root@server:~#';
+            position: absolute;
+            top: -1.5rem;
+            left: 0;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            font-family: var(--font-mono);
+        }
+
+        /* CLI Theme - Copy Button */
+        [data-theme="cli"] .copy-btn {
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        [data-theme="cli"] .copy-btn:hover {
+            background: var(--cyan);
+            color: var(--bg);
+        }
+
+        /* CLI Theme - Terminal Animation */
+        [data-theme="cli"] .terminal-body .terminal-line {
+            animation: typeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        [data-theme="cli"] .terminal-body .terminal-line:nth-child(1) { animation-delay: 0.1s; }
+        [data-theme="cli"] .terminal-body .terminal-line:nth-child(2) { animation-delay: 0.3s; }
+        [data-theme="cli"] .terminal-body .terminal-line:nth-child(3) { animation-delay: 0.5s; }
+        [data-theme="cli"] .terminal-body .terminal-line:nth-child(4) { animation-delay: 0.7s; }
+        [data-theme="cli"] .terminal-body .terminal-line:nth-child(5) { animation-delay: 0.9s; }
+        [data-theme="cli"] .terminal-body .terminal-line:nth-child(6) { animation-delay: 1.1s; }
+        [data-theme="cli"] .terminal-body .terminal-line:nth-child(7) { animation-delay: 1.3s; }
+        [data-theme="cli"] .terminal-body .terminal-line:nth-child(8) { animation-delay: 1.5s; }
+
+        @keyframes typeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* CLI Theme - Flicker Effect on Load */
+        [data-theme="cli"] .hero-content {
+            animation: flicker 0.15s ease-in-out;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+            75% { opacity: 0.9; }
+        }
+
+        /* CLI Theme - Trust Badges */
+        [data-theme="cli"] .trust-badges span {
+            border: 1px solid var(--border);
+            padding: 0.25rem 0.75rem;
+            font-family: var(--font-mono);
+        }
+
+        [data-theme="cli"] .trust-badges svg {
+            color: var(--green);
+            filter: drop-shadow(0 0 3px var(--green));
+        }
+
+        /* CLI Theme - Config Block */
+        [data-theme="cli"] .config-block {
+            position: relative;
+        }
+
+        [data-theme="cli"] .config-header {
+            background: var(--bg);
+            border-bottom-color: var(--cyan);
+        }
+
+        [data-theme="cli"] .yaml-key {
+            color: var(--cyan);
+            text-shadow: 0 0 5px var(--cyan);
+        }
+
+        [data-theme="cli"] .yaml-value {
+            color: var(--text);
+        }
+
+        [data-theme="cli"] .yaml-var {
+            color: var(--yellow);
+            text-shadow: 0 0 5px var(--yellow);
+        }
+
+        /* CLI Theme - Comparison Table Glow */
+        [data-theme="cli"] .comparison-wrapper {
+            box-shadow: 0 0 20px rgba(0, 255, 159, 0.2);
+        }
+
+        [data-theme="cli"] .comparison-table .check {
+            text-shadow: 0 0 10px var(--green);
+        }
+
+        [data-theme="cli"] .comparison-table .cross {
+            color: var(--red);
+            text-shadow: 0 0 5px var(--red);
+        }
+
+        /* CLI Theme - FAQ */
+        [data-theme="cli"] .faq-item {
+            border-color: var(--border);
+        }
+
+        [data-theme="cli"] .faq-question::before {
+            content: '$ ';
+            color: var(--cyan);
+        }
+
+        [data-theme="cli"] .faq-answer p::before {
+            content: '  > ';
+            color: var(--text-dim);
+        }
+
+        /* CLI Theme - Pricing Features */
+        [data-theme="cli"] .pricing-features li::before {
+            content: '[x] ';
+            color: var(--green);
+            font-family: var(--font-mono);
+        }
+
+        [data-theme="cli"] .pricing-features li svg {
+            display: none;
+        }
+
+        /* Mobile Theme Toggle */
+        .theme-toggle.mobile-only {
+            display: none;
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 1000;
+            background: var(--bg-elevated);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="cli"] .theme-toggle.mobile-only {
+            box-shadow: 0 0 20px rgba(0, 255, 159, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links li:has(.theme-toggle) {
+                display: none;
+            }
+
+            .theme-toggle.mobile-only {
+                display: flex;
+            }
+        }
+
+        /* CLI Theme - Header Animation */
+        [data-theme="cli"] .ascii-art {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px var(--cyan), 0 0 10px var(--cyan);
+                opacity: 0.7;
+            }
+            to {
+                text-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan), 0 0 30px var(--cyan);
+                opacity: 1;
+            }
+        }
+
+        /* Smooth theme transition */
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Override for elements that shouldn't transition */
+        .terminal-dot, .copy-btn svg, .toast {
+            transition: none;
+        }
+
+        /* Matrix Canvas */
+        #matrix-canvas {
+            display: none;
+        }
+
+        [data-theme="cli"] #matrix-canvas {
+            display: block;
+        }
+
+        /* CLI Theme - Extra glow on hero */
+        [data-theme="cli"] .hero h1 {
+            animation: textPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes textPulse {
+            0%, 100% {
+                text-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan);
+            }
+            50% {
+                text-shadow: 0 0 20px var(--cyan), 0 0 40px var(--cyan), 0 0 60px var(--cyan);
+            }
+        }
+
+        /* CLI Theme - Section titles */
+        [data-theme="cli"] section h2 {
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* CLI Theme - Terminal header dots */
+        [data-theme="cli"] .terminal-dot.red { background: #ff0000; box-shadow: 0 0 5px #ff0000; }
+        [data-theme="cli"] .terminal-dot.yellow { background: #ffff00; box-shadow: 0 0 5px #ffff00; }
+        [data-theme="cli"] .terminal-dot.green { background: #00ff00; box-shadow: 0 0 5px #00ff00; }
+
+        /* CLI Theme - Enhanced pricing cards */
+        [data-theme="cli"] .pricing-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="cli"] .pricing-card::before {
+            content: 'LICENSE.TXT';
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            font-family: var(--font-mono);
+        }
+
+        [data-theme="cli"] .pricing-name {
+            font-family: var(--font-mono);
+        }
+
+        [data-theme="cli"] .pricing-name::before {
+            content: ':: ';
+            color: var(--cyan);
+        }
+
+        /* CLI Theme - Responsive adjustments */
+        @media (max-width: 768px) {
+            [data-theme="cli"] .ascii-art {
+                font-size: 0.35rem;
+                transform: scale(0.9);
+            }
+        }
+
+        @media (max-width: 480px) {
+            [data-theme="cli"] .ascii-art {
+                font-size: 0.28rem;
+                transform: scale(0.8);
+            }
         }
 
         /* Hero */
@@ -1230,6 +1908,14 @@
         Command copied to clipboard
     </div>
 
+    <!-- Mobile Theme Toggle (Fixed Position) -->
+    <button class="theme-toggle mobile-only" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-label" id="theme-label-mobile">CLI</span>
+        <div class="theme-toggle-track">
+            <div class="theme-toggle-thumb"></div>
+        </div>
+    </button>
+
     <!-- Navigation -->
     <nav>
         <div class="container nav-inner">
@@ -1238,6 +1924,14 @@
                 <li><a href="#features">Features</a></li>
                 <li><a href="#pricing">Pricing</a></li>
                 <li><a href="#faq">FAQ</a></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                        <span class="theme-label" id="theme-label">CLI</span>
+                        <div class="theme-toggle-track">
+                            <div class="theme-toggle-thumb"></div>
+                        </div>
+                    </button>
+                </li>
                 <li><a href="#install" class="nav-cta">Get Started</a></li>
             </ul>
             <button class="mobile-menu-btn" aria-label="Menu">
@@ -1248,17 +1942,29 @@
         </div>
     </nav>
 
+    <!-- Matrix Rain Canvas (CLI Theme) -->
+    <canvas id="matrix-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0; transition: opacity 0.5s;"></canvas>
+
     <!-- Hero Section -->
     <section class="hero" id="install">
         <div class="container">
             <div class="hero-content fade-in">
+                <!-- ASCII Art Logo - Only visible in CLI theme -->
+                <pre class="ascii-art">
+ __        ______        __  __ _                 _
+ \ \      / /  _ \      |  \/  (_) __ _ _ __ __ _| |_ ___
+  \ \ /\ / /| |_) |_____| |\/| | |/ _` | '__/ _` | __/ _ \
+   \ V  V / |  __/______| |  | | | (_| | | | (_| | ||  __/
+    \_/\_/  |_|         |_|  |_|_|\__, |_|  \__,_|\__\___|
+                                  |___/
+                </pre>
                 <div class="badge">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                     Works Everywhere
                 </div>
-                <h1>Migrate WordPress Sites<br><span class="text-gradient">From Any Server</span></h1>
+                <h1>Migrate WordPress Sites<br><span class="text-gradient">From Any Server</span><span class="cursor"></span></h1>
                 <p class="hero-subtitle">The all-in-one CLI tool that works on any server. SSH, SFTP, or FTP — automatically uses the fastest method available.</p>
 
                 <div class="install-box">
@@ -1811,6 +2517,138 @@
     </footer>
 
     <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'cli' ? 'clean' : 'cli';
+
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('wp-migrate-theme', newTheme);
+
+            // Update all labels
+            updateThemeLabels(newTheme);
+
+            // Trigger glitch effect on theme change
+            if (newTheme === 'cli') {
+                triggerGlitchEffect();
+                playBootSequence();
+            }
+        }
+
+        // Update all theme labels
+        function updateThemeLabels(theme) {
+            const labels = document.querySelectorAll('.theme-label');
+            labels.forEach(label => {
+                label.textContent = theme === 'cli' ? 'CLI' : 'Clean';
+            });
+        }
+
+        // Initialize theme from localStorage
+        function initTheme() {
+            const savedTheme = localStorage.getItem('wp-migrate-theme') || 'clean';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeLabels(savedTheme);
+        }
+
+        // Play boot sequence animation for CLI theme
+        function playBootSequence() {
+            const asciiArt = document.querySelector('.ascii-art');
+            if (asciiArt) {
+                asciiArt.style.opacity = '0';
+                setTimeout(() => {
+                    asciiArt.style.transition = 'opacity 0.5s ease';
+                    asciiArt.style.opacity = '1';
+                }, 100);
+            }
+
+            // Animate terminal lines if visible
+            const terminalLines = document.querySelectorAll('.terminal-body .terminal-line');
+            terminalLines.forEach((line, index) => {
+                line.style.opacity = '0';
+                setTimeout(() => {
+                    line.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    line.style.opacity = '1';
+                }, index * 200);
+            });
+        }
+
+        // Add matrix rain effect for CLI mode (lightweight version)
+        function initMatrixRain() {
+            if (document.documentElement.getAttribute('data-theme') !== 'cli') return;
+
+            const canvas = document.getElementById('matrix-canvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const chars = '01';
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = Array(Math.floor(columns)).fill(1);
+
+            function draw() {
+                if (document.documentElement.getAttribute('data-theme') !== 'cli') {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    return;
+                }
+
+                ctx.fillStyle = 'rgba(13, 13, 13, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#00ff9f15';
+                ctx.font = fontSize + 'px monospace';
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+                requestAnimationFrame(draw);
+            }
+
+            draw();
+        }
+
+        // Glitch effect when switching to CLI mode
+        function triggerGlitchEffect() {
+            const body = document.body;
+            body.style.animation = 'glitch 0.3s ease';
+            setTimeout(() => {
+                body.style.animation = '';
+            }, 300);
+        }
+
+        // Run on page load
+        initTheme();
+
+        // Handle matrix canvas visibility
+        function updateMatrixVisibility() {
+            const canvas = document.getElementById('matrix-canvas');
+            if (canvas) {
+                const isCli = document.documentElement.getAttribute('data-theme') === 'cli';
+                canvas.style.opacity = isCli ? '1' : '0';
+                if (isCli) {
+                    initMatrixRain();
+                }
+            }
+        }
+
+        // Initialize matrix on load if CLI theme
+        setTimeout(updateMatrixVisibility, 100);
+
+        // Update matrix when theme changes
+        const originalToggleTheme = toggleTheme;
+        toggleTheme = function() {
+            originalToggleTheme();
+            updateMatrixVisibility();
+        };
+
         // Copy install command
         function copyInstall(event) {
             const command = 'curl -fsSL https://wp-migrate.dev/install.sh | bash';
