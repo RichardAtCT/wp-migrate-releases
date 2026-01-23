@@ -44,10 +44,19 @@
     opacity: 0;
 }
 
-/* TEMP: Disabled glow to debug rendering issues */
+/* ASCII art fade-in with glow */
 [data-theme="cli"] .hero .ascii-art {
-    animation: fadeIn 0.8s ease forwards;
+    animation: fadeIn 0.8s ease forwards, asciiGlow 3s ease-in-out 1s infinite;
     opacity: 0;
+}
+
+@keyframes asciiGlow {
+    0%, 100% {
+        text-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan);
+    }
+    50% {
+        text-shadow: 0 0 15px var(--cyan), 0 0 30px var(--cyan), 0 0 40px var(--cyan);
+    }
 }
 
 @keyframes slideUp {

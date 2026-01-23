@@ -815,20 +815,28 @@
    ASCII Art Container
    ---------------------------------------- */
 
-/* TEMP: Removed text-shadow to debug rendering */
+/* ASCII Art - requires precise monospace rendering */
 .ascii-art {
     display: none;
     font-family: var(--font-mono);
-    font-size: 0.6rem;
-    line-height: 1.2;
+    font-size: clamp(0.5rem, 1.5vw, 0.85rem);
+    line-height: 1.15;
     color: var(--cyan);
     text-align: center;
     white-space: pre;
     margin-bottom: 1rem;
+    /* Critical for ASCII art - disable all font features that could alter character width */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "calt" 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
+    letter-spacing: 0;
 }
 
 [data-theme="cli"] .ascii-art {
     display: block;
+    text-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan);
 }
 
 /* ----------------------------------------
@@ -876,8 +884,7 @@
     }
 
     [data-theme="cli"] .ascii-art {
-        font-size: 0.35rem;
-        transform: scale(0.9);
+        font-size: 0.45rem;
     }
 }
 
@@ -907,7 +914,6 @@
     }
 
     [data-theme="cli"] .ascii-art {
-        font-size: 0.28rem;
-        transform: scale(0.8);
+        font-size: 0.38rem;
     }
 }
