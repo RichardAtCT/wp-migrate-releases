@@ -311,20 +311,6 @@
         initSmoothScroll();
         initResizeHandler();
 
-        // Debug: Check ASCII art font
-        const asciiArt = document.querySelector('.ascii-art');
-        if (asciiArt) {
-            const computed = window.getComputedStyle(asciiArt);
-            console.log('[DEBUG] ASCII Art computed styles:');
-            console.log('  font-family:', computed.fontFamily);
-            console.log('  font-size:', computed.fontSize);
-            console.log('  line-height:', computed.lineHeight);
-            console.log('  font-variant-ligatures:', computed.fontVariantLigatures);
-            console.log('  font-feature-settings:', computed.fontFeatureSettings);
-            console.log('  letter-spacing:', computed.letterSpacing);
-            console.log('  white-space:', computed.whiteSpace);
-            console.log('  text-rendering:', computed.textRendering);
-        }
     }
 
     // Expose functions globally for onclick handlers

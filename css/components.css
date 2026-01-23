@@ -815,28 +815,22 @@
    ASCII Art Container
    ---------------------------------------- */
 
-/* ASCII Art - requires precise monospace rendering */
+/* ASCII Art SVG Logo */
 .ascii-art {
     display: none;
-    font-family: var(--font-mono);
-    font-size: clamp(0.5rem, 1.5vw, 0.85rem);
-    line-height: 1.15;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    margin: 0 auto 1.5rem;
     color: var(--cyan);
-    text-align: center;
-    white-space: pre;
-    margin-bottom: 1rem;
-    /* Critical for ASCII art - disable all font features that could alter character width */
-    font-variant-ligatures: none;
-    font-feature-settings: "liga" 0, "calt" 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: geometricPrecision;
-    letter-spacing: 0;
 }
 
 [data-theme="cli"] .ascii-art {
     display: block;
-    text-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan);
+}
+
+[data-theme="cli"] .ascii-art text {
+    filter: url(#ascii-glow);
 }
 
 /* ----------------------------------------
@@ -884,7 +878,7 @@
     }
 
     [data-theme="cli"] .ascii-art {
-        font-size: 0.45rem;
+        max-width: 350px;
     }
 }
 
@@ -914,6 +908,6 @@
     }
 
     [data-theme="cli"] .ascii-art {
-        font-size: 0.38rem;
+        max-width: 280px;
     }
 }
