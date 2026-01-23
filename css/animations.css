@@ -44,7 +44,7 @@
     opacity: 0;
 }
 
-.hero .ascii-art {
+[data-theme="cli"] .hero .ascii-art {
     animation: fadeIn 0.8s ease forwards, glow 2s ease-in-out infinite alternate;
     animation-delay: 0s, 0.8s;
     opacity: 0;
@@ -218,9 +218,7 @@
    CLI Theme - Glow Animation
    ---------------------------------------- */
 
-[data-theme="cli"] .ascii-art {
-    animation: glow 2s ease-in-out infinite alternate;
-}
+/* Note: Hero ASCII art animation is defined above with fadeIn + glow */
 
 @keyframes glow {
     from {
