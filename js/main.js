@@ -319,6 +319,11 @@
             console.log('  font-family:', computed.fontFamily);
             console.log('  display:', computed.display);
             console.log('  white-space:', computed.whiteSpace);
+            console.log('  letter-spacing:', computed.letterSpacing);
+            console.log('  text-shadow:', computed.textShadow);
+            console.log('  transform:', computed.transform);
+            console.log('  line-height:', computed.lineHeight);
+            console.log('  font-size:', computed.fontSize);
         }
     }
 
