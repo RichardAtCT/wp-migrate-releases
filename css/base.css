@@ -3,8 +3,7 @@
    Reset, Variables, Typography, Utilities
    ======================================== */
 
-/* Fonts - Outfit replaces Inter for more distinctive character */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+/* Note: Fonts (Outfit + JetBrains Mono) are loaded via <link> in HTML for reliability */
 
 /* CSS Variables - Clean Theme (default) */
 :root {
