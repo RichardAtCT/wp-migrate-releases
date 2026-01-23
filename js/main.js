@@ -310,6 +310,16 @@
         initNavScroll();
         initSmoothScroll();
         initResizeHandler();
+
+        // Debug: Check ASCII art font
+        const asciiArt = document.querySelector('.ascii-art');
+        if (asciiArt) {
+            const computed = window.getComputedStyle(asciiArt);
+            console.log('[DEBUG] ASCII Art computed styles:');
+            console.log('  font-family:', computed.fontFamily);
+            console.log('  display:', computed.display);
+            console.log('  white-space:', computed.whiteSpace);
+        }
     }
 
     // Expose functions globally for onclick handlers
