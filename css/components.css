@@ -815,6 +815,7 @@
    ASCII Art Container
    ---------------------------------------- */
 
+/* TEMP: Removed text-shadow to debug rendering */
 .ascii-art {
     display: none;
     font-family: var(--font-mono);
@@ -824,8 +825,6 @@
     text-align: center;
     white-space: pre;
     margin-bottom: 1rem;
-    text-shadow: 0 0 10px var(--cyan);
-    opacity: 0.8;
 }
 
 [data-theme="cli"] .ascii-art {

@@ -44,9 +44,9 @@
     opacity: 0;
 }
 
+/* TEMP: Disabled glow to debug rendering issues */
 [data-theme="cli"] .hero .ascii-art {
-    animation: fadeIn 0.8s ease forwards, glow 2s ease-in-out infinite alternate;
-    animation-delay: 0s, 0.8s;
+    animation: fadeIn 0.8s ease forwards;
     opacity: 0;
 }
 
