@@ -815,22 +815,18 @@
    ASCII Art Container
    ---------------------------------------- */
 
-/* ASCII Art SVG Logo */
+/* ASCII Art Logo (PNG) */
 .ascii-art {
     display: none;
     width: 100%;
     max-width: 500px;
     height: auto;
     margin: 0 auto 1.5rem;
-    color: var(--cyan);
+    filter: drop-shadow(0 0 10px var(--cyan)) drop-shadow(0 0 20px var(--cyan));
 }
 
 [data-theme="cli"] .ascii-art {
     display: block;
-}
-
-[data-theme="cli"] .ascii-art text {
-    filter: url(#ascii-glow);
 }
 
 /* ----------------------------------------

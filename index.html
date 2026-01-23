@@ -82,28 +82,8 @@
     <section class="hero" id="install">
         <div class="container">
             <div class="hero-content">
-                <!-- ASCII Art Logo - SVG version for consistent rendering -->
-                <svg class="ascii-art" viewBox="0 0 600 110" preserveAspectRatio="xMidYMid meet" aria-label="WP-Migrate ASCII Logo">
-                    <defs>
-                        <filter id="ascii-glow" x="-50%" y="-50%" width="200%" height="200%">
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur1"/>
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur2"/>
-                            <feMerge>
-                                <feMergeNode in="blur2"/>
-                                <feMergeNode in="blur1"/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                    </defs>
-                    <text class="ascii-text" dominant-baseline="hanging" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="14" fill="currentColor">
-                        <tspan x="50" y="8">  __        ______        __  __ _                 _</tspan>
-                        <tspan x="50" y="24">  \ \      / /  _ \      |  \/  (_) __ _ _ __ __ _| |_ ___</tspan>
-                        <tspan x="50" y="40">   \ \ /\ / /| |_) |_____| |\/| | |/ _` | '__/ _` | __/ _ \</tspan>
-                        <tspan x="50" y="56">    \ V  V / |  __/______| |  | | | (_| | | | (_| | ||  __/</tspan>
-                        <tspan x="50" y="72">     \_/\_/  |_|         |_|  |_|_|\__, |_|  \__,_|\__\___|</tspan>
-                        <tspan x="50" y="88">                                   |___/</tspan>
-                    </text>
-                </svg>
+                <!-- ASCII Art Logo - Pre-rendered PNG for consistent display -->
+                <img class="ascii-art" src="assets/ascii-logo.png" srcset="assets/ascii-logo.png 1x, assets/ascii-logo@2x.png 2x" alt="WP-Migrate" width="500" height="180">
                 <div class="badge">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
