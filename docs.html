@@ -122,32 +122,13 @@
                 </div>
                 <pre><code><span class="prompt">$</span> curl -fsSL https://wp-migrate.dev/install.sh | bash</code></pre>
             </div>
-            <p>This installs <code>wp-migrate</code> to <code>~/.local/bin</code> and adds it to your PATH.</p>
-
-            <h3>Windows</h3>
-            <p>Download the Windows executable from the <a href="https://github.com/wp-migrate/wp-migrate/releases" target="_blank">GitHub Releases</a> page, or use PowerShell:</p>
-            <div class="code-block">
-                <div class="code-block-header">
-                    <span class="code-block-lang">powershell</span>
-                    <button class="code-block-copy" onclick="copyCode(this)">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <rect x="9" y="9" width="13" height="13" rx="2"/>
-                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
-                        </svg>
-                        Copy
-                    </button>
-                </div>
-                <pre><code><span class="prompt">PS></span> irm https://wp-migrate.dev/install.ps1 | iex</code></pre>
-            </div>
+            <p>This installs <code>wp-migrate</code> to <code>/usr/local/bin</code> (requires sudo).</p>
 
             <h3>Manual Installation</h3>
-            <p>Download the appropriate binary for your platform from <a href="https://github.com/wp-migrate/wp-migrate/releases" target="_blank">GitHub Releases</a>:</p>
+            <p>Download the appropriate binary for your platform from <a href="https://github.com/RichardAtCT/wp-migrate-releases/releases/latest" target="_blank">GitHub Releases</a>:</p>
             <ul>
-                <li><code>wp-migrate-darwin-amd64</code> - macOS Intel</li>
-                <li><code>wp-migrate-darwin-arm64</code> - macOS Apple Silicon</li>
-                <li><code>wp-migrate-linux-amd64</code> - Linux x64</li>
-                <li><code>wp-migrate-linux-arm64</code> - Linux ARM64</li>
-                <li><code>wp-migrate-windows-amd64.exe</code> - Windows x64</li>
+                <li><code>wp-migrate-macos</code> - macOS (Intel & Apple Silicon via Rosetta)</li>
+                <li><code>wp-migrate-linux</code> - Linux</li>
             </ul>
 
             <!-- Quick Start -->
@@ -553,7 +534,7 @@
             <p>Need help? Here's how to get support:</p>
             <ul>
                 <li><strong>Email:</strong> <a href="mailto:support@wp-migrate.dev">support@wp-migrate.dev</a></li>
-                <li><strong>GitHub Issues:</strong> <a href="https://github.com/wp-migrate/wp-migrate/issues" target="_blank">Report bugs or request features</a></li>
+                <li><strong>GitHub Issues:</strong> <a href="https://github.com/RichardAtCT/wp-migrate-releases/issues" target="_blank">Report bugs or request features</a></li>
             </ul>
 
             <div class="docs-note">
