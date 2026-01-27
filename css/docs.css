@@ -1,0 +1,525 @@
+/* ========================================
+   DOCUMENTATION STYLES
+   Sidebar, Content, Code Blocks, Tables
+   ======================================== */
+
+/* ----------------------------------------
+   Documentation Layout
+   ---------------------------------------- */
+
+.docs-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 6rem 1.5rem 4rem;
+    min-height: 100vh;
+}
+
+/* ----------------------------------------
+   Sidebar / Table of Contents
+   ---------------------------------------- */
+
+.docs-sidebar {
+    position: sticky;
+    top: 5rem;
+    height: fit-content;
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.docs-sidebar h4 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+    padding-left: 0.75rem;
+}
+
+.docs-nav {
+    list-style: none;
+}
+
+.docs-nav li {
+    margin-bottom: 0.25rem;
+}
+
+.docs-nav a {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    border-radius: var(--radius-sm);
+    border-left: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.docs-nav a:hover {
+    color: var(--text);
+    background: var(--bg-elevated);
+}
+
+.docs-nav a.active {
+    color: var(--cyan);
+    border-left-color: var(--cyan);
+    background: rgba(0, 217, 255, 0.05);
+}
+
+/* CLI Theme - Sidebar */
+[data-theme="cli"] .docs-nav a.active {
+    background: rgba(0, 255, 159, 0.1);
+    text-shadow: 0 0 5px var(--cyan);
+}
+
+[data-theme="cli"] .docs-nav a::before {
+    content: '> ';
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+[data-theme="cli"] .docs-nav a:hover::before,
+[data-theme="cli"] .docs-nav a.active::before {
+    opacity: 1;
+}
+
+/* ----------------------------------------
+   Main Content Area
+   ---------------------------------------- */
+
+.docs-content {
+    max-width: 800px;
+    min-width: 0;
+}
+
+.docs-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.docs-content .docs-intro {
+    font-size: 1.125rem;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+    line-height: 1.7;
+}
+
+.docs-content h2 {
+    font-size: 1.75rem;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.docs-content h2:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+.docs-content h3 {
+    font-size: 1.25rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+}
+
+.docs-content h4 {
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.docs-content p {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+.docs-content ul,
+.docs-content ol {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    line-height: 1.7;
+}
+
+.docs-content li {
+    margin-bottom: 0.5rem;
+}
+
+.docs-content strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+/* ----------------------------------------
+   Code Blocks
+   ---------------------------------------- */
+
+.docs-content code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--bg-code);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    color: var(--cyan);
+}
+
+.code-block {
+    position: relative;
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin: 1.5rem 0;
+    overflow: hidden;
+}
+
+.code-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+}
+
+.code-block-lang {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+}
+
+.code-block-copy {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.code-block-copy:hover {
+    background: var(--bg-card);
+    color: var(--text);
+    border-color: var(--cyan);
+}
+
+.code-block-copy.copied {
+    color: var(--green);
+    border-color: var(--green);
+}
+
+.code-block-copy svg {
+    width: 14px;
+    height: 14px;
+}
+
+.code-block pre {
+    margin: 0;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text);
+}
+
+.code-block pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting */
+.code-block .comment { color: var(--text-dim); }
+.code-block .keyword { color: var(--cyan); }
+.code-block .string { color: var(--green); }
+.code-block .variable { color: var(--yellow); }
+.code-block .flag { color: var(--cyan); }
+.code-block .command { color: var(--text); }
+.code-block .prompt { color: var(--cyan); }
+
+/* YAML syntax */
+.code-block .yaml-key { color: var(--cyan); }
+.code-block .yaml-value { color: var(--text); }
+.code-block .yaml-comment { color: var(--text-dim); }
+.code-block .yaml-var { color: var(--yellow); }
+
+/* CLI Theme - Code Blocks */
+[data-theme="cli"] .code-block {
+    border-color: var(--cyan);
+    box-shadow: 0 0 10px rgba(0, 255, 159, 0.1), inset 0 0 20px rgba(0, 255, 159, 0.02);
+}
+
+[data-theme="cli"] .code-block-header {
+    border-bottom-color: var(--cyan);
+}
+
+[data-theme="cli"] .code-block-copy:hover {
+    background: var(--cyan);
+    color: var(--bg);
+}
+
+/* ----------------------------------------
+   Tables
+   ---------------------------------------- */
+
+.docs-table-wrapper {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.docs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.docs-table th,
+.docs-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.docs-table th {
+    background: var(--bg-card);
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+.docs-table td {
+    color: var(--text-muted);
+}
+
+.docs-table tr:last-child td {
+    border-bottom: none;
+}
+
+.docs-table tbody tr:hover {
+    background: var(--bg-elevated);
+}
+
+.docs-table code {
+    font-size: 0.8rem;
+}
+
+/* CLI Theme - Tables */
+[data-theme="cli"] .docs-table-wrapper {
+    border-color: var(--cyan);
+}
+
+[data-theme="cli"] .docs-table th,
+[data-theme="cli"] .docs-table td {
+    border-color: var(--border);
+}
+
+[data-theme="cli"] .docs-table th {
+    color: var(--cyan);
+}
+
+/* ----------------------------------------
+   Info Boxes / Callouts
+   ---------------------------------------- */
+
+.docs-note {
+    background: rgba(0, 217, 255, 0.05);
+    border: 1px solid rgba(0, 217, 255, 0.2);
+    border-left: 4px solid var(--cyan);
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+}
+
+.docs-note-title {
+    font-weight: 600;
+    color: var(--cyan);
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.docs-note p {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+.docs-warning {
+    background: rgba(234, 179, 8, 0.05);
+    border: 1px solid rgba(234, 179, 8, 0.2);
+    border-left: 4px solid var(--yellow);
+}
+
+.docs-warning .docs-note-title {
+    color: var(--yellow);
+}
+
+/* CLI Theme - Callouts */
+[data-theme="cli"] .docs-note {
+    background: rgba(0, 255, 159, 0.05);
+    border-color: var(--cyan);
+}
+
+[data-theme="cli"] .docs-warning {
+    background: rgba(255, 255, 0, 0.05);
+    border-color: var(--yellow);
+}
+
+/* ----------------------------------------
+   Anchor Links
+   ---------------------------------------- */
+
+.docs-content h2[id],
+.docs-content h3[id] {
+    scroll-margin-top: 5rem;
+}
+
+.docs-content h2[id]:hover .anchor-link,
+.docs-content h3[id]:hover .anchor-link {
+    opacity: 1;
+}
+
+.anchor-link {
+    color: var(--text-dim);
+    margin-left: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+    font-weight: 400;
+}
+
+.anchor-link:hover {
+    color: var(--cyan);
+}
+
+/* ----------------------------------------
+   Mobile Sidebar Toggle
+   ---------------------------------------- */
+
+.docs-sidebar-toggle {
+    display: none;
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    z-index: 100;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.docs-sidebar-toggle svg {
+    width: 18px;
+    height: 18px;
+    margin-right: 0.5rem;
+}
+
+[data-theme="cli"] .docs-sidebar-toggle {
+    border-color: var(--cyan);
+    box-shadow: 0 0 15px rgba(0, 255, 159, 0.2);
+}
+
+/* ----------------------------------------
+   Responsive
+   ---------------------------------------- */
+
+@media (max-width: 1024px) {
+    .docs-layout {
+        grid-template-columns: 220px 1fr;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .docs-layout {
+        grid-template-columns: 1fr;
+        padding-top: 5rem;
+    }
+
+    .docs-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 99;
+        background: var(--bg);
+        padding: 5rem 1.5rem 2rem;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        max-height: none;
+        overflow-y: auto;
+    }
+
+    .docs-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .docs-sidebar-toggle {
+        display: flex;
+        align-items: center;
+    }
+
+    .docs-sidebar-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.5rem;
+    }
+
+    .docs-content h1 {
+        font-size: 2rem;
+    }
+
+    .docs-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .code-block pre {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .docs-content h1 {
+        font-size: 1.75rem;
+    }
+
+    .code-block-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .docs-table th,
+    .docs-table td {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+}

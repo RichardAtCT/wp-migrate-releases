@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - WP-Migrate | WordPress Migration CLI Tool</title>
+    <meta name="description" content="Complete documentation for WP-Migrate. Learn how to install, configure, and use the WordPress migration CLI tool.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="WP-Migrate Documentation">
+    <meta property="og:description" content="Complete documentation for the WordPress migration CLI tool.">
+    <meta property="og:url" content="https://wp-migrate.dev/docs.html">
+    <meta property="og:type" content="website">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/themes/cli.css">
+    <link rel="stylesheet" href="css/docs.css">
+</head>
+<body>
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 13l4 4L19 7"/>
+        </svg>
+        <span id="toast-message">Copied to clipboard</span>
+    </div>
+
+    <!-- Mobile Theme Toggle (Fixed Position) -->
+    <button class="theme-toggle mobile-only" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-label" id="theme-label-mobile">CLI</span>
+        <div class="theme-toggle-track">
+            <div class="theme-toggle-thumb"></div>
+        </div>
+    </button>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-inner">
+            <a href="/" class="logo">WP-<span>Migrate</span></a>
+            <ul class="nav-links">
+                <li><a href="/#features">Features</a></li>
+                <li><a href="docs.html">Docs</a></li>
+                <li><a href="/#pricing">Pricing</a></li>
+                <li><a href="/#faq">FAQ</a></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                        <span class="theme-label" id="theme-label">CLI</span>
+                        <div class="theme-toggle-track">
+                            <div class="theme-toggle-thumb"></div>
+                        </div>
+                    </button>
+                </li>
+                <li><a href="/#install" class="nav-cta">Get Started</a></li>
+            </ul>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12h18M3 6h18M3 18h18"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Matrix Rain Canvas (CLI Theme) -->
+    <canvas id="matrix-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0; transition: opacity 0.5s;"></canvas>
+
+    <!-- Mobile Sidebar Toggle -->
+    <button class="docs-sidebar-toggle" onclick="toggleDocsSidebar()" aria-label="Toggle navigation">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        Menu
+    </button>
+
+    <!-- Documentation Layout -->
+    <div class="docs-layout">
+        <!-- Sidebar -->
+        <aside class="docs-sidebar" id="docs-sidebar">
+            <button class="docs-sidebar-close" onclick="toggleDocsSidebar()" aria-label="Close navigation">&times;</button>
+            <h4>Documentation</h4>
+            <ul class="docs-nav">
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#quick-start">Quick Start</a></li>
+                <li><a href="#licensing">Licensing</a></li>
+                <li><a href="#configuration">Configuration</a></li>
+                <li><a href="#commands">Commands</a></li>
+                <li><a href="#pre-dns-testing">Pre-DNS Testing</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#security">Security</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="docs-content">
+            <h1>WP-Migrate Documentation</h1>
+            <p class="docs-intro">A CLI tool for migrating WordPress sites between servers. Automatically detects SSH, SFTP, or FTP access and uses the fastest method available.</p>
+
+            <!-- Installation -->
+            <h2 id="installation">Installation</h2>
+
+            <h3>macOS & Linux</h3>
+            <p>Run the installer script which automatically detects your system and downloads the correct binary:</p>
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span class="code-block-lang">bash</span>
+                    <button class="code-block-copy" onclick="copyCode(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <pre><code><span class="prompt">$</span> curl -fsSL https://wp-migrate.dev/install.sh | bash</code></pre>
+            </div>
+            <p>This installs <code>wp-migrate</code> to <code>~/.local/bin</code> and adds it to your PATH.</p>
+
+            <h3>Windows</h3>
+            <p>Download the Windows executable from the <a href="https://github.com/wp-migrate/wp-migrate/releases" target="_blank">GitHub Releases</a> page, or use PowerShell:</p>
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span class="code-block-lang">powershell</span>
+                    <button class="code-block-copy" onclick="copyCode(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <pre><code><span class="prompt">PS></span> irm https://wp-migrate.dev/install.ps1 | iex</code></pre>
+            </div>
+
+            <h3>Manual Installation</h3>
+            <p>Download the appropriate binary for your platform from <a href="https://github.com/wp-migrate/wp-migrate/releases" target="_blank">GitHub Releases</a>:</p>
+            <ul>
+                <li><code>wp-migrate-darwin-amd64</code> - macOS Intel</li>
+                <li><code>wp-migrate-darwin-arm64</code> - macOS Apple Silicon</li>
+                <li><code>wp-migrate-linux-amd64</code> - Linux x64</li>
+                <li><code>wp-migrate-linux-arm64</code> - Linux ARM64</li>
+                <li><code>wp-migrate-windows-amd64.exe</code> - Windows x64</li>
+            </ul>
+
+            <!-- Quick Start -->
+            <h2 id="quick-start">Quick Start</h2>
+
+            <h3>Interactive Wizard</h3>
+            <p>The easiest way to run a migration is with the interactive wizard:</p>
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span class="code-block-lang">bash</span>
+                    <button class="code-block-copy" onclick="copyCode(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <pre><code><span class="prompt">$</span> wp-migrate</code></pre>
+            </div>
+            <p>The wizard will prompt you for source and destination credentials, then run the migration automatically.</p>
+
+            <h3>Command-Line Mode</h3>
+            <p>For automation or scripted migrations, create a YAML config file and run:</p>
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span class="code-block-lang">bash</span>
+                    <button class="code-block-copy" onclick="copyCode(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <pre><code><span class="prompt">$</span> wp-migrate <span class="flag">--config</span> migration.yaml</code></pre>
+            </div>
+
+            <!-- Licensing -->
+            <h2 id="licensing">Licensing</h2>
+            <p>WP-Migrate includes 3 free migrations to try the tool. After that, you'll need to purchase a license.</p>
+
+            <h3>Activating a License</h3>
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span class="code-block-lang">bash</span>
+                    <button class="code-block-copy" onclick="copyCode(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <pre><code><span class="prompt">$</span> wp-migrate activate <span class="string">YOUR-LICENSE-KEY</span></code></pre>
+            </div>
+
+            <h3>Deactivating a License</h3>
+            <p>To move your license to a new machine:</p>
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span class="code-block-lang">bash</span>
+                    <button class="code-block-copy" onclick="copyCode(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <pre><code><span class="prompt">$</span> wp-migrate deactivate</code></pre>
+            </div>
+
+            <h3>Check License Status</h3>
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span class="code-block-lang">bash</span>
+                    <button class="code-block-copy" onclick="copyCode(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <pre><code><span class="prompt">$</span> wp-migrate status</code></pre>
+            </div>
+
+            <div class="docs-note">
+                <div class="docs-note-title">License Types</div>
+                <p><strong>Single User ($39)</strong> - 2 machine activations, unlimited migrations.<br>
+                <strong>Agency ($149)</strong> - Unlimited activations, unlimited migrations.</p>
+            </div>
+
+            <!-- Configuration -->
+            <h2 id="configuration">Configuration</h2>
+            <p>Create a YAML configuration file for scripted or repeatable migrations:</p>
+
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span class="code-block-lang">yaml</span>
+                    <button class="code-block-copy" onclick="copyCode(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <pre><code><span class="yaml-comment"># migration.yaml</span>
+<span class="yaml-key">source:</span>
+  <span class="yaml-key">ftp_host:</span> <span class="yaml-value">ftp.oldsite.com</span>
+  <span class="yaml-key">ftp_user:</span> <span class="yaml-value">oldsite_user</span>
+  <span class="yaml-key">ftp_pass:</span> <span class="yaml-var">${SOURCE_FTP_PASS}</span>  <span class="yaml-comment"># Environment variable</span>
+  <span class="yaml-key">wp_path:</span> <span class="yaml-value">/public_html</span>
+
+<span class="yaml-key">destination:</span>
+  <span class="yaml-key">ftp_host:</span> <span class="yaml-value">ftp.newsite.com</span>
+  <span class="yaml-key">ftp_user:</span> <span class="yaml-value">newsite_user</span>
+  <span class="yaml-key">ftp_pass:</span> <span class="yaml-var">${DEST_FTP_PASS}</span>
+  <span class="yaml-key">wp_path:</span> <span class="yaml-value">/public_html</span>
+  <span class="yaml-key">db_host:</span> <span class="yaml-value">localhost</span>
+  <span class="yaml-key">db_name:</span> <span class="yaml-value">newsite_wp</span>
+  <span class="yaml-key">db_user:</span> <span class="yaml-value">newsite_dbuser</span>
+  <span class="yaml-key">db_pass:</span> <span class="yaml-var">${DEST_DB_PASS}</span>
+  <span class="yaml-key">new_url:</span> <span class="yaml-value">https://newsite.com</span></code></pre>
+            </div>
+
+            <h3>Configuration Reference</h3>
+            <div class="docs-table-wrapper">
+                <table class="docs-table">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Description</th>
+                            <th>Required</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>ftp_host</code></td>
+                            <td>FTP/SFTP server hostname</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><code>ftp_user</code></td>
+                            <td>FTP/SFTP username</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><code>ftp_pass</code></td>
+                            <td>FTP/SFTP password (supports env vars)</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><code>ftp_port</code></td>
+                            <td>FTP/SFTP port (default: 21 for FTP, 22 for SFTP)</td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp_path</code></td>
+                            <td>Path to WordPress installation</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><code>ssh_host</code></td>
+                            <td>SSH hostname (if different from FTP)</td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td><code>ssh_user</code></td>
+                            <td>SSH username</td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td><code>ssh_key</code></td>
+                            <td>Path to SSH private key</td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td><code>db_host</code></td>
+                            <td>Database hostname</td>
+                            <td>Dest only</td>
+                        </tr>
+                        <tr>
+                            <td><code>db_name</code></td>
+                            <td>Database name</td>
+                            <td>Dest only</td>
+                        </tr>
+                        <tr>
+                            <td><code>db_user</code></td>
+                            <td>Database username</td>
+                            <td>Dest only</td>
+                        </tr>
+                        <tr>
+                            <td><code>db_pass</code></td>
+                            <td>Database password</td>
+                            <td>Dest only</td>
+                        </tr>
+                        <tr>
+                            <td><code>new_url</code></td>
+                            <td>New site URL for search-replace</td>
+                            <td>Dest only</td>
+                        </tr>
+                        <tr>
+                            <td><code>server_ip</code></td>
+                            <td>Server IP for pre-DNS testing</td>
+                            <td>No</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="docs-warning">
+                <div class="docs-note-title">Security Tip</div>
+                <p>Never commit passwords to version control. Use environment variables like <code>${VAR_NAME}</code> in your config file, then set them in your shell before running.</p>
+            </div>
+
+            <!-- Commands -->
+            <h2 id="commands">Commands</h2>
+            <div class="docs-table-wrapper">
+                <table class="docs-table">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>wp-migrate</code></td>
+                            <td>Run interactive migration wizard</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate --config &lt;file&gt;</code></td>
+                            <td>Run migration from YAML config</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate activate &lt;key&gt;</code></td>
+                            <td>Activate license on this machine</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate deactivate</code></td>
+                            <td>Deactivate license from this machine</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate status</code></td>
+                            <td>Show license and migration status</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate version</code></td>
+                            <td>Show version information</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate help</code></td>
+                            <td>Show help message</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Common Flags</h3>
+            <div class="docs-table-wrapper">
+                <table class="docs-table">
+                    <thead>
+                        <tr>
+                            <th>Flag</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>--config, -c</code></td>
+                            <td>Path to YAML configuration file</td>
+                        </tr>
+                        <tr>
+                            <td><code>--dry-run</code></td>
+                            <td>Show what would be done without making changes</td>
+                        </tr>
+                        <tr>
+                            <td><code>--verbose, -v</code></td>
+                            <td>Enable verbose output</td>
+                        </tr>
+                        <tr>
+                            <td><code>--skip-db</code></td>
+                            <td>Skip database migration (files only)</td>
+                        </tr>
+                        <tr>
+                            <td><code>--skip-files</code></td>
+                            <td>Skip file migration (database only)</td>
+                        </tr>
+                        <tr>
+                            <td><code>--force</code></td>
+                            <td>Overwrite existing files without prompting</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pre-DNS Testing -->
+            <h2 id="pre-dns-testing">Pre-DNS Testing</h2>
+            <p>Test your migrated site before switching DNS by adding the <code>server_ip</code> option to your destination config:</p>
+
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span class="code-block-lang">yaml</span>
+                    <button class="code-block-copy" onclick="copyCode(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <pre><code><span class="yaml-key">destination:</span>
+  <span class="yaml-comment"># ... other settings ...</span>
+  <span class="yaml-key">new_url:</span> <span class="yaml-value">https://newsite.com</span>
+  <span class="yaml-key">server_ip:</span> <span class="yaml-value">192.168.1.100</span>  <span class="yaml-comment"># Destination server IP</span></code></pre>
+            </div>
+
+            <p>After migration completes, add an entry to your local <code>/etc/hosts</code> file:</p>
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span class="code-block-lang">bash</span>
+                    <button class="code-block-copy" onclick="copyCode(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <pre><code>192.168.1.100  newsite.com</code></pre>
+            </div>
+
+            <p>Now you can visit <code>https://newsite.com</code> in your browser to test the migrated site on the new server before updating DNS.</p>
+
+            <!-- How It Works -->
+            <h2 id="how-it-works">How It Works</h2>
+            <p>WP-Migrate automatically detects the best available method for each server:</p>
+
+            <h3>1. Server Detection</h3>
+            <p>When connecting to a server, WP-Migrate checks for:</p>
+            <ul>
+                <li><strong>SSH access</strong> - Enables rsync file transfer and direct MySQL/WP-CLI access</li>
+                <li><strong>WP-CLI</strong> - Used for database operations when available</li>
+                <li><strong>MySQL access</strong> - Direct database export/import</li>
+                <li><strong>SFTP/FTPS</strong> - Secure file transfer</li>
+                <li><strong>FTP</strong> - Fallback file transfer method</li>
+            </ul>
+
+            <h3>2. File Transfer</h3>
+            <ul>
+                <li><strong>With SSH:</strong> Uses rsync for incremental, compressed transfers (4-10x faster)</li>
+                <li><strong>Without SSH:</strong> Uses FTP/SFTP with parallel transfers and retry logic</li>
+            </ul>
+
+            <h3>3. Database Migration</h3>
+            <ul>
+                <li><strong>With WP-CLI:</strong> Direct export/import using <code>wp db export</code> and <code>wp db import</code></li>
+                <li><strong>Without WP-CLI:</strong> Deploys a temporary PHP agent for database operations</li>
+            </ul>
+
+            <h3>4. URL Replacement</h3>
+            <p>WP-Migrate performs serialization-aware search-replace:</p>
+            <ul>
+                <li>Properly handles PHP serialized arrays (preserving string lengths)</li>
+                <li>Replaces URLs in all database tables</li>
+                <li>Handles both HTTP and HTTPS URLs</li>
+                <li>Preserves theme settings, widget configurations, and plugin data</li>
+            </ul>
+
+            <!-- Security -->
+            <h2 id="security">Security</h2>
+
+            <h3>PHP Agent Security</h3>
+            <p>When SSH is not available, WP-Migrate deploys a temporary PHP agent for database operations. The agent includes multiple security measures:</p>
+            <ul>
+                <li><strong>Randomized filename</strong> - Agent is deployed with a random 32-character filename</li>
+                <li><strong>Token authentication</strong> - All requests require a secure token</li>
+                <li><strong>Auto-expiry</strong> - Agent automatically expires after 1 hour</li>
+                <li><strong>Self-deletion</strong> - Agent deletes itself after cleanup command</li>
+                <li><strong>IP restriction</strong> - Optional IP whitelist support</li>
+            </ul>
+
+            <h3>Credentials</h3>
+            <ul>
+                <li>Credentials are never logged or stored permanently</li>
+                <li>Use environment variables in config files to avoid committing secrets</li>
+                <li>License keys are stored locally in <code>~/.wp-migrate/</code></li>
+            </ul>
+
+            <h3>Recommended Practices</h3>
+            <ul>
+                <li>Use SFTP or FTPS instead of plain FTP when possible</li>
+                <li>Use SSH keys instead of passwords when available</li>
+                <li>Set environment variables for passwords rather than putting them in config files</li>
+                <li>Delete config files containing credentials after migration</li>
+            </ul>
+
+            <!-- Support -->
+            <h2 id="support">Support</h2>
+            <p>Need help? Here's how to get support:</p>
+            <ul>
+                <li><strong>Email:</strong> <a href="mailto:support@wp-migrate.dev">support@wp-migrate.dev</a></li>
+                <li><strong>GitHub Issues:</strong> <a href="https://github.com/wp-migrate/wp-migrate/issues" target="_blank">Report bugs or request features</a></li>
+            </ul>
+
+            <div class="docs-note">
+                <div class="docs-note-title">Priority Support</div>
+                <p>Agency license holders receive priority email support with faster response times.</p>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="logo">WP-<span>Migrate</span></a>
+                    <p>CLI tool for migrating WordPress sites between any servers. Auto-detects the fastest transfer method.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="/#features">Features</a></li>
+                        <li><a href="/#pricing">Pricing</a></li>
+                        <li><a href="/#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="/#install">Installation</a></li>
+                        <li><a href="docs.html">Documentation</a></li>
+                        <li><a href="/#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="mailto:hello@wp-migrate.dev">Email</a></li>
+                        <li><a href="mailto:support@wp-migrate.dev">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>&copy; 2025 WP-Migrate. All rights reserved.</div>
+                <div class="footer-legal">
+                    <a href="/privacy.html">Privacy Policy</a>
+                    <a href="/terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <!-- GoatCounter Analytics -->
+    <script data-goatcounter="https://wp-migrate.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

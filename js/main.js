@@ -191,6 +191,47 @@
         });
     }
 
+    /**
+     * Copy code block content to clipboard
+     * @param {HTMLElement} button - The copy button that was clicked
+     */
+    function copyCode(button) {
+        const codeBlock = button.closest('.code-block');
+        const code = codeBlock.querySelector('pre code');
+        const text = code.textContent;
+
+        navigator.clipboard.writeText(text).then(() => {
+            // Show toast notification
+            const toast = document.getElementById('toast');
+            if (toast) {
+                const message = document.getElementById('toast-message');
+                if (message) message.textContent = 'Copied to clipboard';
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            }
+
+            // Update button state
+            const originalHTML = button.innerHTML;
+            button.classList.add('copied');
+            button.innerHTML = '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Copied!';
+
+            setTimeout(() => {
+                button.classList.remove('copied');
+                button.innerHTML = originalHTML;
+            }, 2000);
+        });
+    }
+
+    /**
+     * Toggle documentation sidebar on mobile
+     */
+    function toggleDocsSidebar() {
+        const sidebar = document.getElementById('docs-sidebar');
+        if (sidebar) {
+            sidebar.classList.toggle('open');
+        }
+    }
+
     // ========================================
     // FAQ Accordion
     // ========================================
@@ -293,6 +334,61 @@
     }
 
     // ========================================
+    // Documentation Sidebar
+    // ========================================
+
+    /**
+     * Initialize documentation sidebar scroll spy
+     */
+    function initDocsSidebar() {
+        const sidebar = document.querySelector('.docs-sidebar');
+        if (!sidebar) return;
+
+        const navLinks = sidebar.querySelectorAll('.docs-nav a');
+        const sections = [];
+
+        // Collect all sections that have corresponding nav links
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                const section = document.querySelector(href);
+                if (section) {
+                    sections.push({ element: section, link: link });
+                }
+            }
+        });
+
+        // Update active link on scroll
+        function updateActiveLink() {
+            const scrollPos = window.scrollY + 100;
+
+            let activeSection = sections[0];
+            sections.forEach(section => {
+                if (section.element.offsetTop <= scrollPos) {
+                    activeSection = section;
+                }
+            });
+
+            navLinks.forEach(link => link.classList.remove('active'));
+            if (activeSection) {
+                activeSection.link.classList.add('active');
+            }
+        }
+
+        window.addEventListener('scroll', updateActiveLink);
+        updateActiveLink();
+
+        // Close sidebar on mobile when clicking a link
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                }
+            });
+        });
+    }
+
+    // ========================================
     // Initialization
     // ========================================
 
@@ -310,12 +406,15 @@
         initNavScroll();
         initSmoothScroll();
         initResizeHandler();
+        initDocsSidebar();
 
     }
 
     // Expose functions globally for onclick handlers
     window.toggleTheme = toggleTheme;
     window.copyInstall = copyInstall;
+    window.copyCode = copyCode;
+    window.toggleDocsSidebar = toggleDocsSidebar;
 
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
