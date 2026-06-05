@@ -50,14 +50,68 @@ detect_platform() {
     esac
 
     case "$arch" in
-        x86_64|amd64|arm64|aarch64)
-            # All supported architectures
-            # macOS ARM64 binary works on Intel via Rosetta 2
+        x86_64|amd64)
+            ARCH="x86_64"
+            ;;
+        arm64|aarch64)
+            ARCH="arm64"
             ;;
         *)
             error "Unsupported architecture: $arch"
             ;;
     esac
+
+    # Only x86_64 prebuilt binaries are published for Linux and Windows.
+    # macOS ships a native ARM64 binary (Intel Macs run it via Rosetta 2).
+    if [ "$ARCH" = "arm64" ] && [ "$PLATFORM" != "macos" ]; then
+        error "No prebuilt $PLATFORM ARM64 binary is available; the $PLATFORM build is x86_64 only.
+Please run from source, or contact support@wp-migrate.dev if you need an ARM64 build."
+    fi
+}
+
+# Abort early (with a clear message) if this system can't run the prebuilt
+# Linux binary. The binary is built on Debian 11 (python:3.11-bullseye) and is
+# dynamically linked against GNU glibc, so it needs glibc >= 2.31 and will not
+# run on musl-based distros (Alpine, etc.) at all. Catching this here replaces
+# the cryptic "GLIBC_2.XX not found" loader crash with an actionable message.
+# Set WP_MIGRATE_ALLOW_UNSUPPORTED_GLIBC=1 to override the glibc version check.
+check_glibc() {
+    [ "$PLATFORM" = "linux" ] || return 0
+
+    local required_major=2 required_minor=31 ver major minor ldd_out
+
+    # Probe libc. musl's ldd prints to stderr, so capture both streams.
+    ldd_out="$(ldd --version 2>&1 | head -n1)"
+
+    # The binary is glibc-linked; musl systems can't run it regardless of version.
+    if printf '%s' "$ldd_out" | grep -qi musl; then
+        error "This system uses musl libc (e.g. Alpine Linux), but the prebuilt wp-migrate binary requires GNU glibc >= ${required_major}.${required_minor}.
+Please run from source, or contact support@wp-migrate.dev for help."
+    fi
+
+    # Best-effort glibc version probe (ldd first, then getconf).
+    ver=$(printf '%s' "$ldd_out" | grep -oE '[0-9]+\.[0-9]+' | head -n1)
+    if [ -z "$ver" ]; then
+        ver=$(getconf GNU_LIBC_VERSION 2>/dev/null | grep -oE '[0-9]+\.[0-9]+' | head -n1)
+    fi
+
+    # If we can't determine the version, don't block the install.
+    [ -n "$ver" ] || return 0
+
+    major=${ver%%.*}
+    minor=${ver#*.}
+
+    if [ "$major" -lt "$required_major" ] || \
+       { [ "$major" -eq "$required_major" ] && [ "$minor" -lt "$required_minor" ]; }; then
+        if [ "${WP_MIGRATE_ALLOW_UNSUPPORTED_GLIBC:-}" = "1" ]; then
+            warn "Detected glibc $ver (< ${required_major}.${required_minor}); continuing because WP_MIGRATE_ALLOW_UNSUPPORTED_GLIBC=1."
+            warn "wp-migrate will likely fail to start with a 'GLIBC_2.XX not found' error."
+        else
+            error "Detected glibc $ver, but wp-migrate needs glibc >= ${required_major}.${required_minor}.
+Your Linux distribution is too old to run the prebuilt binary.
+Upgrade your OS, set WP_MIGRATE_ALLOW_UNSUPPORTED_GLIBC=1 to install anyway, or contact support@wp-migrate.dev."
+        fi
+    fi
 }
 
 # Get latest release version
@@ -129,6 +183,8 @@ main() {
 
     detect_platform
     info "Detected platform: $PLATFORM"
+
+    check_glibc
 
     local version
     version=$(get_latest_version)
