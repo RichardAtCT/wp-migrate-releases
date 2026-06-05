@@ -94,6 +94,7 @@
                 <li><a href="#commands">Commands</a></li>
                 <li><a href="#pre-dns-testing">Pre-DNS Testing</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#limitations">Limitations</a></li>
                 <li><a href="#security">Security</a></li>
                 <li><a href="#support">Support</a></li>
             </ul>
@@ -500,6 +501,17 @@
                 <li>Handles both HTTP and HTTPS URLs</li>
                 <li>Preserves theme settings, widget configurations, and plugin data</li>
             </ul>
+
+            <!-- Limitations -->
+            <h2 id="limitations">Limitations</h2>
+
+            <h3>Multisite</h3>
+            <p>WP-Migrate currently supports <strong>single-site WordPress installations only</strong>. Multisite networks are not supported:</p>
+            <ul>
+                <li><strong>Network → network migration</strong> - Moving an entire multisite network to a new server is not yet supported</li>
+                <li><strong>Single site → network import</strong> - Importing a standalone site into an existing multisite network as a subsite is not yet supported</li>
+            </ul>
+            <p>Both are planned for future releases. If you need multisite support, let us know at <a href="mailto:support@wp-migrate.dev">support@wp-migrate.dev</a> — it helps us prioritize.</p>
 
             <!-- Security -->
             <h2 id="security">Security</h2>
