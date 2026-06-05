@@ -70,15 +70,15 @@ Please run from source, or contact support@wp-migrate.dev if you need an ARM64 b
 }
 
 # Abort early (with a clear message) if this system can't run the prebuilt
-# Linux binary. The binary is built on Debian 11 (python:3.11-bullseye) and is
-# dynamically linked against GNU glibc, so it needs glibc >= 2.31 and will not
+# Linux binary. The binary is built against glibc 2.17 (manylinux2014) and is
+# dynamically linked against GNU glibc, so it needs glibc >= 2.17 and will not
 # run on musl-based distros (Alpine, etc.) at all. Catching this here replaces
 # the cryptic "GLIBC_2.XX not found" loader crash with an actionable message.
 # Set WP_MIGRATE_ALLOW_UNSUPPORTED_GLIBC=1 to override the glibc version check.
 check_glibc() {
     [ "$PLATFORM" = "linux" ] || return 0
 
-    local required_major=2 required_minor=31 ver major minor ldd_out
+    local required_major=2 required_minor=17 ver major minor ldd_out
 
     # Probe libc. musl's ldd prints to stderr, so capture both streams.
     ldd_out="$(ldd --version 2>&1 | head -n1)"
