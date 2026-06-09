@@ -40,6 +40,8 @@ sudo mv wp-migrate /usr/local/bin/
 - Handles WordPress serialized data correctly
 - Interactive wizard or config file mode
 - Pre-DNS-cutover site verification
+- ✅ Multisite network migrations (network → network) — auto-detected
+- ✅ Import a standalone site into an existing multisite network as a new subsite
 
 ## Quick Start
 
@@ -53,6 +55,24 @@ wp-migrate status
 # Activate license (use key from purchase email)
 wp-migrate activate xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
+
+## Multisite
+
+WP-Migrate supports WordPress multisite two ways:
+
+**Migrate an entire network (network → network).** Auto-detected from the source
+`wp-config.php` — just run `wp-migrate migrate -c config.yaml`. Network constants
+are regenerated for the new host and every subsite's URLs are rewritten.
+
+**Import a standalone site into an existing network.** Add `mode: multisite-import`
+and a `multisite_import` block to your config, then:
+
+```bash
+wp-migrate import-to-network -c config.yaml --dry-run   # preview
+wp-migrate import-to-network -c config.yaml             # run
+```
+
+WP-Migrate registers a new subsite, imports the source's tables under a new `wp_{N}_*` prefix, merges users (matching by login/email), relocates media to `wp-content/uploads/sites/{N}/`, and rewrites URLs — leaving the rest of the network untouched. The network's `wp-config.php` and database are preserved.
 
 ## Trial
 
