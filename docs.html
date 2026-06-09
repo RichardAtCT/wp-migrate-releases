@@ -94,7 +94,7 @@
                 <li><a href="#commands">Commands</a></li>
                 <li><a href="#pre-dns-testing">Pre-DNS Testing</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#limitations">Limitations</a></li>
+                <li><a href="#multisite">Multisite</a></li>
                 <li><a href="#security">Security</a></li>
                 <li><a href="#support">Support</a></li>
             </ul>
@@ -125,11 +125,15 @@
             </div>
             <p>This installs <code>wp-migrate</code> to <code>/usr/local/bin</code> (requires sudo).</p>
 
+            <h3>Windows</h3>
+            <p>Download <code>wp-migrate-windows.exe</code> from the <a href="https://github.com/RichardAtCT/wp-migrate-releases/releases/latest" target="_blank">latest release</a> and add it to your <code>PATH</code>.</p>
+
             <h3>Manual Installation</h3>
             <p>Download the appropriate binary for your platform from <a href="https://github.com/RichardAtCT/wp-migrate-releases/releases/latest" target="_blank">GitHub Releases</a>:</p>
             <ul>
-                <li><code>wp-migrate-macos</code> - macOS (Intel & Apple Silicon via Rosetta)</li>
-                <li><code>wp-migrate-linux</code> - Linux</li>
+                <li><code>wp-migrate-macos</code> - macOS ARM64 (Apple Silicon, works on Intel via Rosetta 2)</li>
+                <li><code>wp-migrate-linux</code> - Linux x86_64</li>
+                <li><code>wp-migrate-windows.exe</code> - Windows x86_64</li>
             </ul>
 
             <!-- Quick Start -->
@@ -153,7 +157,7 @@
             <p>The wizard will prompt you for source and destination credentials, then run the migration automatically.</p>
 
             <h3>Command-Line Mode</h3>
-            <p>For automation or scripted migrations, create a YAML config file and run:</p>
+            <p>For automation or scripted migrations, generate a sample config, edit it, then run the migration:</p>
             <div class="code-block">
                 <div class="code-block-header">
                     <span class="code-block-lang">bash</span>
@@ -165,7 +169,9 @@
                         Copy
                     </button>
                 </div>
-                <pre><code><span class="prompt">$</span> wp-migrate <span class="flag">--config</span> migration.yaml</code></pre>
+                <pre><code><span class="prompt">$</span> wp-migrate init                       <span class="yaml-comment"># writes a documented config.yaml</span>
+<span class="prompt">$</span> wp-migrate validate <span class="flag">-c</span> config.yaml    <span class="yaml-comment"># check it before running</span>
+<span class="prompt">$</span> wp-migrate migrate <span class="flag">-c</span> config.yaml     <span class="yaml-comment"># run the full migration</span></code></pre>
             </div>
 
             <!-- Licensing -->
@@ -239,22 +245,26 @@
                         Copy
                     </button>
                 </div>
-                <pre><code><span class="yaml-comment"># migration.yaml</span>
+                <pre><code><span class="yaml-comment"># config.yaml — generate with `wp-migrate init`</span>
 <span class="yaml-key">source:</span>
-  <span class="yaml-key">ftp_host:</span> <span class="yaml-value">ftp.oldsite.com</span>
-  <span class="yaml-key">ftp_user:</span> <span class="yaml-value">oldsite_user</span>
-  <span class="yaml-key">ftp_pass:</span> <span class="yaml-var">${SOURCE_FTP_PASS}</span>  <span class="yaml-comment"># Environment variable</span>
+  <span class="yaml-key">host:</span> <span class="yaml-value">oldsite.com</span>
+  <span class="yaml-key">user:</span> <span class="yaml-value">oldsite_user</span>
+  <span class="yaml-key">pass:</span> <span class="yaml-var">"${SOURCE_PASS}"</span>   <span class="yaml-comment"># Environment variable</span>
+  <span class="yaml-key">type:</span> <span class="yaml-value">auto</span>             <span class="yaml-comment"># auto | ssh | sftp | ftps | ftp</span>
+  <span class="yaml-comment"># key_file: ~/.ssh/id_rsa   # Optional: SSH key instead of password</span>
   <span class="yaml-key">wp_path:</span> <span class="yaml-value">/public_html</span>
 
 <span class="yaml-key">destination:</span>
-  <span class="yaml-key">ftp_host:</span> <span class="yaml-value">ftp.newsite.com</span>
-  <span class="yaml-key">ftp_user:</span> <span class="yaml-value">newsite_user</span>
-  <span class="yaml-key">ftp_pass:</span> <span class="yaml-var">${DEST_FTP_PASS}</span>
+  <span class="yaml-key">host:</span> <span class="yaml-value">newsite.com</span>
+  <span class="yaml-key">user:</span> <span class="yaml-value">newsite_user</span>
+  <span class="yaml-key">pass:</span> <span class="yaml-var">"${DEST_PASS}"</span>
+  <span class="yaml-key">type:</span> <span class="yaml-value">auto</span>
   <span class="yaml-key">wp_path:</span> <span class="yaml-value">/public_html</span>
+  <span class="yaml-comment"># Database credentials (required for SFTP/FTP, optional with SSH+WP-CLI)</span>
   <span class="yaml-key">db_host:</span> <span class="yaml-value">localhost</span>
   <span class="yaml-key">db_name:</span> <span class="yaml-value">newsite_wp</span>
   <span class="yaml-key">db_user:</span> <span class="yaml-value">newsite_dbuser</span>
-  <span class="yaml-key">db_pass:</span> <span class="yaml-var">${DEST_DB_PASS}</span>
+  <span class="yaml-key">db_pass:</span> <span class="yaml-var">"${DEST_DB_PASS}"</span>
   <span class="yaml-key">new_url:</span> <span class="yaml-value">https://newsite.com</span></code></pre>
             </div>
 
@@ -270,44 +280,44 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><code>ftp_host</code></td>
-                            <td>FTP/SFTP server hostname</td>
+                            <td><code>host</code></td>
+                            <td>Server hostname</td>
                             <td>Yes</td>
                         </tr>
                         <tr>
-                            <td><code>ftp_user</code></td>
-                            <td>FTP/SFTP username</td>
+                            <td><code>user</code></td>
+                            <td>Connection username</td>
                             <td>Yes</td>
                         </tr>
                         <tr>
-                            <td><code>ftp_pass</code></td>
-                            <td>FTP/SFTP password (supports env vars)</td>
-                            <td>Yes</td>
+                            <td><code>pass</code></td>
+                            <td>Connection password (supports env vars)</td>
+                            <td>Yes*</td>
                         </tr>
                         <tr>
-                            <td><code>ftp_port</code></td>
-                            <td>FTP/SFTP port (default: 21 for FTP, 22 for SFTP)</td>
+                            <td><code>type</code></td>
+                            <td>Connection type: <code>auto</code> (default), <code>ssh</code>, <code>sftp</code>, <code>ftps</code>, or <code>ftp</code></td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td><code>port</code></td>
+                            <td>Connection port (defaults based on type: 22 for SSH/SFTP, 21 for FTP)</td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td><code>key_file</code></td>
+                            <td>Path to SSH private key (instead of <code>pass</code>)</td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td><code>key_passphrase</code></td>
+                            <td>Passphrase for an encrypted SSH key</td>
                             <td>No</td>
                         </tr>
                         <tr>
                             <td><code>wp_path</code></td>
                             <td>Path to WordPress installation</td>
                             <td>Yes</td>
-                        </tr>
-                        <tr>
-                            <td><code>ssh_host</code></td>
-                            <td>SSH hostname (if different from FTP)</td>
-                            <td>No</td>
-                        </tr>
-                        <tr>
-                            <td><code>ssh_user</code></td>
-                            <td>SSH username</td>
-                            <td>No</td>
-                        </tr>
-                        <tr>
-                            <td><code>ssh_key</code></td>
-                            <td>Path to SSH private key</td>
-                            <td>No</td>
                         </tr>
                         <tr>
                             <td><code>db_host</code></td>
@@ -342,10 +352,57 @@
                     </tbody>
                 </table>
             </div>
+            <p><small>* <code>pass</code> is required unless you authenticate with an SSH <code>key_file</code>. Database credentials are required for SFTP/FTP transfers and optional when SSH + WP-CLI is available.</small></p>
+
+            <div class="docs-note">
+                <div class="docs-note-title">Legacy field names</div>
+                <p>Older configs using <code>ftp_host</code>, <code>ftp_user</code>, <code>ftp_pass</code>, <code>ftp_type</code>, and <code>ftp_port</code> still work as aliases for <code>host</code>, <code>user</code>, <code>pass</code>, <code>type</code>, and <code>port</code>. New configs should use the shorter names above.</p>
+            </div>
 
             <div class="docs-warning">
                 <div class="docs-note-title">Security Tip</div>
                 <p>Never commit passwords to version control. Use environment variables like <code>${VAR_NAME}</code> in your config file, then set them in your shell before running.</p>
+            </div>
+
+            <h3>Multisite</h3>
+            <p>Multisite networks are <strong>auto-detected from the source <code>wp-config.php</code></strong>, so a normal <code>migrate</code> handles a whole network with no extra config. Add an optional <code>multisite</code> block only to override behaviour or remap specific subsites:</p>
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span class="code-block-lang">yaml</span>
+                    <button class="code-block-copy" onclick="copyCode(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <pre><code><span class="yaml-comment"># Optional — only needed to override auto-detection</span>
+<span class="yaml-key">multisite:</span>
+  <span class="yaml-key">enabled:</span> <span class="yaml-value">true</span>          <span class="yaml-comment"># omit to auto-detect; false forces single-site handling</span>
+  <span class="yaml-key">subdomain:</span> <span class="yaml-value">true</span>        <span class="yaml-comment"># omit to inherit source SUBDOMAIN_INSTALL</span>
+  <span class="yaml-key">subsite_mappings:</span>     <span class="yaml-comment"># optional: remap specific subsites</span>
+    <span class="yaml-key">- old:</span> <span class="yaml-value">shop.oldsite.com</span>
+      <span class="yaml-key">new:</span> <span class="yaml-value">shop.newbrand.com</span></code></pre>
+            </div>
+            <p>To import a standalone site <em>into</em> an existing network as a new subsite, set <code>mode: multisite-import</code> with a <code>multisite_import</code> block and run <code>wp-migrate import-to-network -c config.yaml</code>:</p>
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span class="code-block-lang">yaml</span>
+                    <button class="code-block-copy" onclick="copyCode(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <pre><code><span class="yaml-key">mode:</span> <span class="yaml-value">multisite-import</span>
+<span class="yaml-comment"># destination.new_url is the NETWORK's base URL in this mode</span>
+<span class="yaml-key">multisite_import:</span>
+  <span class="yaml-key">subsite_slug:</span> <span class="yaml-value">myblog</span>       <span class="yaml-comment"># required; lowercase letters/digits/hyphens</span>
+  <span class="yaml-key">default_role:</span> <span class="yaml-value">editor</span>      <span class="yaml-comment"># role for source users lacking one (default: subscriber)</span>
+  <span class="yaml-comment"># network_admin_user: admin  # optional: grant this network user admin on the subsite</span></code></pre>
             </div>
 
             <!-- Commands -->
@@ -361,11 +418,55 @@
                     <tbody>
                         <tr>
                             <td><code>wp-migrate</code></td>
-                            <td>Run interactive migration wizard</td>
+                            <td>Run the interactive migration wizard (no arguments)</td>
                         </tr>
                         <tr>
-                            <td><code>wp-migrate --config &lt;file&gt;</code></td>
-                            <td>Run migration from YAML config</td>
+                            <td><code>wp-migrate start</code></td>
+                            <td>Start the wizard, optionally pre-loading a config</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate init</code></td>
+                            <td>Write a sample, documented config file</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate validate -c &lt;file&gt;</code></td>
+                            <td>Validate a migration config file</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate test-connection -c &lt;file&gt;</code></td>
+                            <td>Test source/destination connections</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate migrate -c &lt;file&gt;</code></td>
+                            <td>Run a full migration (files + database + URL replace)</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate import-to-network -c &lt;file&gt;</code></td>
+                            <td>Import a standalone site into an existing multisite network</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate export -c &lt;file&gt;</code></td>
+                            <td>Export the source database only</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate import -c &lt;file&gt; --sql &lt;file&gt;</code></td>
+                            <td>Import a database to the destination</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate verify -c &lt;file&gt;</code></td>
+                            <td>Show pre-DNS-cutover testing instructions</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate verify-site -c &lt;file&gt;</code></td>
+                            <td>HTTP-check the migrated site before DNS cutover</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate deploy-agent -c &lt;file&gt;</code></td>
+                            <td>Deploy the PHP agent to a server and verify it works</td>
+                        </tr>
+                        <tr>
+                            <td><code>wp-migrate cleanup -c &lt;file&gt;</code></td>
+                            <td>Remove PHP agents and temporary files from servers</td>
                         </tr>
                         <tr>
                             <td><code>wp-migrate activate &lt;key&gt;</code></td>
@@ -377,15 +478,15 @@
                         </tr>
                         <tr>
                             <td><code>wp-migrate status</code></td>
-                            <td>Show license and migration status</td>
+                            <td>Show license and trial status</td>
                         </tr>
                         <tr>
-                            <td><code>wp-migrate version</code></td>
+                            <td><code>wp-migrate --version</code></td>
                             <td>Show version information</td>
                         </tr>
                         <tr>
-                            <td><code>wp-migrate help</code></td>
-                            <td>Show help message</td>
+                            <td><code>wp-migrate --help</code></td>
+                            <td>Show help (works on any subcommand too)</td>
                         </tr>
                     </tbody>
                 </table>
@@ -410,20 +511,24 @@
                             <td>Show what would be done without making changes</td>
                         </tr>
                         <tr>
-                            <td><code>--verbose, -v</code></td>
-                            <td>Enable verbose output</td>
+                            <td><code>--skip-files</code></td>
+                            <td>Skip file transfer (database only)</td>
                         </tr>
                         <tr>
                             <td><code>--skip-db</code></td>
                             <td>Skip database migration (files only)</td>
                         </tr>
                         <tr>
-                            <td><code>--skip-files</code></td>
-                            <td>Skip file migration (database only)</td>
+                            <td><code>--skip-search-replace</code></td>
+                            <td>Skip URL search-replace (same-URL migrations with DNS cutover)</td>
                         </tr>
                         <tr>
-                            <td><code>--force</code></td>
-                            <td>Overwrite existing files without prompting</td>
+                            <td><code>--source-url</code></td>
+                            <td>Override the source site URL used to reach the agent</td>
+                        </tr>
+                        <tr>
+                            <td><code>--yes, -y</code></td>
+                            <td>Skip the confirmation prompt</td>
                         </tr>
                     </tbody>
                 </table>
@@ -502,16 +607,43 @@
                 <li>Preserves theme settings, widget configurations, and plugin data</li>
             </ul>
 
-            <!-- Limitations -->
-            <h2 id="limitations">Limitations</h2>
+            <!-- Multisite -->
+            <h2 id="multisite">Multisite</h2>
+            <p>WP-Migrate supports WordPress multisite in two ways:</p>
 
-            <h3>Multisite</h3>
-            <p>WP-Migrate currently supports <strong>single-site WordPress installations only</strong>. Multisite networks are not supported:</p>
-            <ul>
-                <li><strong>Network → network migration</strong> - Moving an entire multisite network to a new server is not yet supported</li>
-                <li><strong>Single site → network import</strong> - Importing a standalone site into an existing multisite network as a subsite is not yet supported</li>
-            </ul>
-            <p>Both are planned for future releases. If you need multisite support, let us know at <a href="mailto:support@wp-migrate.dev">support@wp-migrate.dev</a> — it helps us prioritize.</p>
+            <h3>Migrate an entire network (network → network)</h3>
+            <p>Auto-detected from the source <code>wp-config.php</code> — just run a normal migration. Network constants are regenerated for the new host and every subsite's URLs (including the <code>wp_blogs</code> / <code>wp_site</code> domain columns) are rewritten.</p>
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span class="code-block-lang">bash</span>
+                    <button class="code-block-copy" onclick="copyCode(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <pre><code><span class="prompt">$</span> wp-migrate migrate <span class="flag">-c</span> config.yaml</code></pre>
+            </div>
+
+            <h3>Import a standalone site into an existing network</h3>
+            <p>Add <code>mode: multisite-import</code> and a <code>multisite_import</code> block (see <a href="#configuration">Configuration</a>), then preview and run:</p>
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span class="code-block-lang">bash</span>
+                    <button class="code-block-copy" onclick="copyCode(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/>
+                            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+                <pre><code><span class="prompt">$</span> wp-migrate import-to-network <span class="flag">-c</span> config.yaml <span class="flag">--dry-run</span>   <span class="yaml-comment"># preview</span>
+<span class="prompt">$</span> wp-migrate import-to-network <span class="flag">-c</span> config.yaml             <span class="yaml-comment"># run</span></code></pre>
+            </div>
+            <p>WP-Migrate registers a new subsite, imports the source's tables under a new <code>wp_{N}_*</code> prefix, merges users (matching by login/email), relocates media to <code>wp-content/uploads/sites/{N}/</code>, and rewrites URLs — leaving the rest of the network untouched. The network's <code>wp-config.php</code> and database are preserved.</p>
 
             <!-- Security -->
             <h2 id="security">Security</h2>
@@ -590,7 +722,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <div>&copy; 2025 WP-Migrate. All rights reserved.</div>
+                <div>&copy; 2026 WP-Migrate. All rights reserved.</div>
                 <div class="footer-legal">
                     <a href="/privacy.html">Privacy Policy</a>
                     <a href="/terms.html">Terms of Service</a>
