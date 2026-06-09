@@ -341,6 +341,11 @@
                     <h3>Retry Logic</h3>
                     <p>Exponential backoff for unreliable connections. Robust error recovery built in.</p>
                 </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🕸️</div>
+                    <h3>Multisite Networks</h3>
+                    <p>Migrate an entire network (network → network), auto-detected from your wp-config.php. Or import a standalone site into an existing network as a new subsite — users and media included.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -547,11 +552,11 @@
                 </div>
                 <div class="faq-item fade-in">
                     <button class="faq-question">
-                        Can I migrate multisite installations?
+                        Does WP-Migrate support multisite?
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Currently, WP-Migrate supports single-site WordPress installations. Multisite support is on our roadmap for a future release.</p>
+                        <p>Yes. It migrates entire multisite networks (network → network), auto-detected from your wp-config.php, and can also import a standalone site into an existing network as a new subsite with <code>wp-migrate import-to-network</code> — moving the site's tables, users, and media and rewriting URLs, while leaving the rest of the network untouched.</p>
                     </div>
                 </div>
                 <div class="faq-item fade-in">
